@@ -1,0 +1,7 @@
+# AstroPSD: clean portfolio route and redirect old bookmarked URL.
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteCond %{THE_REQUEST} \s/+portfolio\.html[\s?] [NC]
+RewriteRule ^portfolio\.html$ /portfolio [R=301,L]
+RewriteRule ^portfolio/?$ portfolio.html [L]
+</IfModule>
