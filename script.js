@@ -61,20 +61,28 @@
       window.scrollTo({ top: 0, behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
     });
   });
+
+  // Scroll content is only hidden if it starts below the current viewport.
+  // No global motion-ready class is applied after paint, avoiding flashes.
   if ("IntersectionObserver" in window && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-    const reveal = Array.from(document.querySelectorAll(".reveal"));
-    reveal.forEach(function (el) {
-      if (el.getBoundingClientRect().top > window.innerHeight + 100) el.classList.add("pending-reveal");
+    const targets = Array.from(document.querySelectorAll(".testimonials, .work-gallery .project-card"));
+    const fold = window.innerHeight - 18;
+    targets.forEach(function (item, index) {
+      if (item.getBoundingClientRect().top >= fold) {
+        item.style.setProperty("--scroll-delay", item.matches(".project-card") ? String(index % 2 * 90) + "ms" : "0ms");
+        item.classList.add("scroll-pending");
+      }
     });
-    root.classList.add("motion-ready");
     const observer = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("is-visible");
-          observer.unobserve(entry.target);
+        if (!entry.isIntersecting) return;
+        // This also handles items already on screen without animating them.
+        if (entry.target.classList.contains("scroll-pending")) {
+          entry.target.classList.add("scroll-visible");
         }
+        observer.unobserve(entry.target);
       });
-    }, { rootMargin: "0px 0px -8% 0px", threshold: .04 });
-    reveal.forEach(function (el) { observer.observe(el); });
+    }, {rootMargin:"0px 0px -6% 0px",threshold:0.04});
+    targets.forEach(function (item) { observer.observe(item); });
   }
 })();

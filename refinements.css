@@ -1,0 +1,121 @@
+
+/* AstroPSD fidelity pass: original Figma artwork, responsive type and stable motion */
+@font-face {
+  font-family: "Geist Serif";
+  font-style: normal;
+  font-weight: 400;
+  font-display: optional;
+  src: url("https://cdn.jsdelivr.net/gh/vercel/geist-font@main/fonts/GeistSerif/variable/GeistSerif%5BELSH%5D.ttf") format("truetype");
+}
+.serif { font-family: "Geist Serif", "Gilda Display", Georgia, serif; }
+.site-header .brand {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  transform: none;
+  font-style: normal;
+  width: 91px;
+  min-height: 29px;
+}
+.brand img {
+  width: 91px;
+  height: 18px;
+  display: block;
+  object-fit: contain;
+}
+html[data-theme="dark"] .brand img { filter: invert(1); }
+.client-logos img { filter: none; opacity: .76; }
+.client-logos .caesar { mix-blend-mode: multiply; }
+html[data-theme="dark"] .client-logos img:not(.caesar) { filter: brightness(1.5); opacity: .86; }
+html[data-theme="dark"] .client-logos .caesar { filter: grayscale(1) invert(1); mix-blend-mode: screen; opacity: .8; }
+.client-track > [aria-hidden="true"] { display: flex; }
+.site-footer::before,
+html[data-theme="dark"] .site-footer::before {
+  background: url("/assets/footer-gradient.svg") center bottom / 100% 100% no-repeat;
+}
+html[data-theme="dark"] .site-footer::before { opacity: .68; }
+.footer-social-row h2 { font-size: clamp(62px,6.7vw,100px); }
+.work-link { font-size: clamp(80px,11vw,166px); gap: 4px; align-items: center; }
+.footer-arrow { width: clamp(96px,10vw,151px); height: auto; flex: 0 0 auto; object-fit: contain; }
+.social-icons { gap: 4px; padding-bottom: 5px; }
+.social-icons a { width: 40px; height: 40px; border: 0; border-radius: 0; }
+.social-icons a img { width: 40px; height: 40px; object-fit: contain; display:block; }
+.home-hero .landscape {
+  width: max(1450px,110vw);
+  max-width:none;
+  height:auto;
+  will-change: opacity;
+}
+html[data-theme="dark"] .home-hero .landscape { filter: grayscale(1) invert(1); }
+.project-preview { background: var(--video); }
+.project-card { contain: layout style; }
+/* First paint: entrance animation is CSS-driven, not triggered by an after-paint
+   JavaScript class. There is no visible-then-hidden flash. */
+@keyframes astro-enter {
+  0% { opacity: 0; transform: translate3d(0,14px,0); }
+  100% { opacity: 1; transform: translate3d(0,0,0); }
+}
+@keyframes astro-enter-soft {
+  0% { opacity: 0; transform: translate3d(0,7px,0); }
+  100% { opacity: 1; transform: translate3d(0,0,0); }
+}
+@keyframes astro-landscape-enter {
+  from { opacity: 0; }
+  to { opacity: .26; }
+}
+[data-entrance] {
+  animation-name: astro-enter;
+  animation-duration: 950ms;
+  animation-delay: var(--intro-delay,0ms);
+  animation-timing-function: cubic-bezier(.22,1,.36,1);
+  animation-fill-mode: backwards;
+  backface-visibility: hidden;
+}
+[data-entrance="header"] { --intro-delay: 0ms; animation-name: astro-enter-soft; }
+[data-entrance="title"] { --intro-delay: 130ms; animation-duration: 1000ms; }
+[data-entrance="description"] { --intro-delay: 250ms; animation-duration: 1000ms; }
+[data-entrance="actions"] { --intro-delay: 370ms; animation-duration: 1050ms; }
+[data-entrance="clients"] { --intro-delay: 590ms; animation-duration: 1100ms; }
+.home-hero .landscape[data-entrance="landscape"] {
+  animation: astro-landscape-enter 1400ms cubic-bezier(.22,1,.36,1) 190ms backwards;
+}
+@media (hover: hover) {
+  .portfolio-cta, .dark-cta, .book-button { will-change: auto; }
+}
+/* Only off-screen content is queued for scroll reveals. Initially visible
+   content never gets hidden after rendering. */
+.scroll-pending { opacity: 0; transform: translate3d(0,21px,0); }
+.scroll-pending.scroll-visible {
+  opacity: 1;
+  transform: translate3d(0,0,0);
+  transition:
+    opacity 860ms cubic-bezier(.2,.74,.2,1),
+    transform 950ms cubic-bezier(.22,1,.36,1);
+  transition-delay: var(--scroll-delay,0ms);
+}
+@media (max-width:760px) {
+  .site-header .brand { width: 72px; min-height: 24px; }
+  .brand img { width: 72px; height: auto; }
+  .home-hero .hero-copy h1 { font-size: 30px; }
+  .testimonials h2 { font-size: 28px; line-height: 1.08; }
+  .portfolio-intro h1 { font-size: 24px; line-height: 1.12; }
+  .home-hero .landscape { width: max(650px,150vw); }
+  .footer-social-row h2 { font-size: 60px; }
+  .footer-bottom-row .work-link { font-size: clamp(48px,11.5vw,60px); gap: 3px; }
+  .footer-arrow { width: 48px; }
+  .social-icons { gap: 4px; padding-bottom: 0; }
+  .social-icons a, .social-icons a img { width: 40px; height: 40px; }
+  .site-footer::before, html[data-theme="dark"] .site-footer::before {
+    background-position: center bottom;
+    background-size: auto 100%;
+  }
+}
+@media (max-width:365px) {
+  .home-hero .hero-copy h1 { font-size: 29px; }
+  .footer-bottom-row .work-link { font-size: 48px; }
+  .footer-arrow { width: 42px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-entrance], .home-hero .landscape[data-entrance="landscape"] { animation:none !important; }
+  .scroll-pending, .scroll-pending.scroll-visible { opacity:1 !important; transform:none !important; transition:none !important; }
+}
