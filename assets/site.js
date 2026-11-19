@@ -64,7 +64,7 @@ root.innerHTML='<main id="main-content" class="case-page"><div class="case-cover
 '<section class="next-wrap" aria-label="Next project"><div class="next-overline"><span>UP NEXT</span><span>'+clean(next.category)+' / '+clean(next.year)+'</span></div>'+
 '<a class="next-project" href="'+projectUrl(next)+'" aria-label="View next project: '+clean(next.title)+'">'+cover(next)+'<span class="next-title"><strong>'+clean(next.title)+'</strong><span>↗</span></span><span class="next-progress" aria-hidden="true"></span></a></section></main>';
 const nextEl=root.querySelector('.next-project');
-if(nextEl&&!reduced){let ticking=false;window.addEventListener('scroll',function update(){if(!root.contains(nextEl)){window.removeEventListener('scroll',update);return;}if(ticking)return;ticking=true;requestAnimationFrame(()=>{const b=nextEl.getBoundingClientRect();const range=window.innerHeight+b.height;const val=Math.max(0,Math.min(1,(window.innerHeight-b.top)/range));const bar=nextEl.querySelector('.next-progress');if(bar)bar.style.width=(val*100).toFixed(1)+'%';ticking=false})},{passive:true})}
+if(nextEl&&!reduced){let ticking=false;window.addEventListener('scroll',function update(){if(!root.contains(nextEl)){window.removeEventListener('scroll',update);return;}if(ticking)return;ticking=true;requestAnimationFrame(()=>{const b=nextEl.getBoundingClientRect();const range=window.innerHeight+b.height;const val=Math.max(0,Math.min(1,(window.innerHeight-b.top)/range));const bar=nextEl.querySelector('.next-progress');if(bar)bar.style.width=(val*100).toFixed(1)+'%';nextEl.style.setProperty('--reveal',val.toFixed(3));ticking=false})},{passive:true})}
 addReveal();setMeta(p.title+' — Matthew Exousia®',p.overview,p.cover);
 }
 function setMeta(title,description,coverUrl){
@@ -125,12 +125,21 @@ else if(path.startsWith('/projects/')){const slug=path.split('/')[2];const p=fin
 else renderHome();
 function loader(){
 const screen=document.getElementById('load-screen');if(!screen)return;
-const bar=document.getElementById('load-bar');const label=document.getElementById('load-label');
+const bar=document.getElementById('load-bar'),label=document.getElementById('load-label');
 const first=root.querySelector('img[data-first="true"]');
-let promise=Promise.resolve();
-if(first&&first.decode){promise=first.decode().catch(()=>{});}
-const timeout=new Promise(r=>setTimeout(r,1400));
-Promise.race([promise,timeout]).then(()=>{if(bar)bar.style.width='100%';if(label)label.textContent='100%';setTimeout(()=>{screen.classList.add('hidden');setTimeout(()=>screen.remove(),420)},160)});
+let ready=false,started=performance.now();
+const imageReady=(first&&typeof first.decode==='function')?first.decode().catch(()=>{}):Promise.resolve();
+Promise.race([imageReady,new Promise(r=>setTimeout(r,1300))]).then(()=>{ready=true});
+function update(now){
+const elapsed=now-started;
+const p=Math.min(1,elapsed/820);
+const n=Math.min(100,ready?Math.floor(p*100):Math.floor(p*93));
+if(bar)bar.style.width=n+'%';
+if(label)label.textContent=n+'%';
+if(n<100)requestAnimationFrame(update);
+else setTimeout(()=>{screen.classList.add('hidden');setTimeout(()=>screen.remove(),420)},160);
+}
+requestAnimationFrame(update);
 }
 if(reduced){document.getElementById('load-screen')?.remove()}else loader();
 })();
