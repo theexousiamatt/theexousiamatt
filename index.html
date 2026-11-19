@@ -1,0 +1,288 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#101110">
+<meta name="description" content="Matthew Exousia — product designer and design engineer based in Lagos. Selected work across digital products, websites, identities, and experiences.">
+<meta property="og:title" content="Matthew Exousia® — Selected Work">
+<meta property="og:description" content="Digital products, websites and brand experiences, thoughtfully designed.">
+<title>Matthew Exousia® — Product Designer & Design Engineer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;450;500;550;600;650;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#111211;--fg:#f0efeb;--secondary:#a2a5a0;--line:#363936;--card:#1b1c1b;--menu:#151615;--image:#252625;--font:"DM Sans",Arial,Helvetica,sans-serif;color-scheme:dark}
+:root[data-theme="light"]{--bg:#efefeb;--fg:#151715;--secondary:#5f635e;--line:#bfc3bb;--card:#e2e4de;--menu:#e6e8e2;--image:#d6dad4;color-scheme:light}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--fg);font:500 13px/1.4 var(--font);-webkit-font-smoothing:antialiased;transition:background .35s ease,color .35s ease}
+button,a{font:inherit;color:inherit}a{text-decoration:none}button{border:0;cursor:pointer}button:focus-visible,a:focus-visible{outline:2px solid #d99e5f;outline-offset:4px}
+button:disabled{cursor:default}
+::selection{background:#ffb85c;color:#161616}
+#loader{position:fixed;inset:0;z-index:999;background:var(--bg);display:flex;flex-direction:column;justify-content:end;padding:clamp(18px,2vw,34px);gap:12px;transition:opacity .48s ease,visibility .48s}
+#loader.done{opacity:0;visibility:hidden;pointer-events:none}
+.load-label{display:flex;justify-content:space-between;font-size:11px;text-transform:uppercase;letter-spacing:.035em}
+.load-track{width:100%;height:1px;background:var(--line);overflow:hidden}
+#load-bar{height:100%;background:var(--fg);width:0;transition:width .12s linear}
+.shell{padding:0 clamp(20px,2.35vw,44px)}
+.top{position:relative;z-index:30;display:grid;grid-template-columns:1.18fr 1fr .67fr .85fr;gap:16px;align-items:start;padding:25px 0 0;min-height:82px;text-transform:uppercase;font-size:11px;font-weight:600;letter-spacing:-.025em}
+.identity{display:inline-block;width:max-content;line-height:1.1}
+.identity span{font-size:9px;vertical-align:super;padding-left:1px}
+.header-email{white-space:nowrap}
+.header-time{white-space:nowrap;color:var(--secondary)}
+.nav-right{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;text-align:right}
+.top a,.top button{position:relative}
+.top a::after,.top button::after,.social a::after{content:"";position:absolute;left:0;right:100%;bottom:-3px;height:1px;background:currentColor;transition:right .25s ease}
+.top a:hover::after,.top button:hover::after,.social a:hover::after{right:0}
+.text-button{background:none;padding:0;text-transform:uppercase;font-size:11px;font-weight:600;white-space:nowrap}
+.menu-button{padding:0;background:none;border:0;line-height:1.2;min-width:45px;text-align:right}
+.hero{min-height:380px;display:grid;grid-template-columns:1fr 1fr;align-items:end;padding-bottom:57px}
+.hero-copy{grid-column:2;max-width:515px;font-size:clamp(17px,1.65vw,25px);font-weight:500;line-height:1.21;letter-spacing:-.045em;margin:0;text-wrap:balance}
+.filterline{display:flex;align-items:baseline;justify-content:space-between;border-top:1px solid var(--line);padding:14px 0 17px;gap:15px}
+.filters{display:flex;flex-wrap:wrap;gap:0 0;font-size:12px;line-height:1.5;letter-spacing:-.025em}
+.filter{padding:1px 2px 1px 0;background:none;color:var(--secondary);transition:color .22s}
+.filter.active,.filter:hover{color:var(--fg)}
+.comma{display:inline-block;padding:0 7px 0 2px;color:var(--secondary)}
+.count{font-size:11px;letter-spacing:-.015em;color:var(--secondary);white-space:nowrap}
+.project-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:2px;margin:0 calc(-1 * clamp(20px,2.35vw,44px))}
+.project-card{position:relative;min-width:0;aspect-ratio:1.28;overflow:hidden;background:var(--image);padding:0;display:block;text-align:left;isolation:isolate}
+.project-card::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 60%,rgba(0,0,0,.57));z-index:3;opacity:0;transition:opacity .35s}
+.project-card:hover::after,.project-card:focus-visible::after{opacity:1}
+.project-card .art{transition:transform .75s cubic-bezier(.2,.75,.22,1),filter .5s ease}
+.project-card:hover .art,.project-card:focus-visible .art{transform:scale(1.038)}
+.project-label{position:absolute;z-index:4;bottom:22px;left:25px;right:25px;display:flex;align-items:flex-end;justify-content:space-between;gap:20px;color:#fff;opacity:0;transform:translateY(8px);transition:opacity .3s ease,transform .3s ease}
+.project-card:hover .project-label,.project-card:focus-visible .project-label{opacity:1;transform:translateY(0)}
+.project-label strong{display:block;font-size:17px;letter-spacing:-.045em;font-weight:600}
+.project-label small{font-size:10px;text-transform:uppercase;letter-spacing:.02em}
+.project-label b{font-weight:400;font-size:20px}
+.art{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.art-eatly{background:#f6d8a4;color:#522916}
+.art-eatly .art-title{font-weight:700;letter-spacing:-.095em;font-size:clamp(60px,10vw,200px);position:relative;z-index:1}
+.art-eatly:before{content:"";position:absolute;width:75%;height:125%;border-radius:50%;background:radial-gradient(ellipse,#fbab61 0%,#e27a40 48%,transparent 72%);left:34%;top:22%;filter:blur(12px)}
+.remote-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:2;filter:saturate(.98)}
+.remote-img.is-broken{display:none}
+.art-jerin{background:#f2efe6;color:#1f2220;display:block;padding:8%}
+.jerin-top{display:flex;justify-content:space-between;align-items:center;font-size:clamp(13px,2vw,27px);font-weight:700;letter-spacing:-.055em}
+.jerin-top i{font-size:10px;color:#70756e;font-style:normal;letter-spacing:0}
+.jerin-headline{font-size:clamp(24px,4vw,60px);font-weight:650;letter-spacing:-.075em;margin:9% 0 5%}
+.jerin-board{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
+.jerin-lane{background:#fffefb;border:1px solid #e3e1dc;border-radius:8px;padding:10px;min-height:clamp(110px,16vw,240px)}
+.jerin-lane strong{display:block;font-size:10px;margin-bottom:17px}
+.jerin-task{background:#eeeae1;border-radius:4px;height:26px;margin:7px 0}
+.jerin-lane:nth-child(2) .jerin-task:first-of-type{background:#e3e5d5}
+.jerin-lane:nth-child(3) .jerin-task:last-of-type{background:#f3dcba}
+.art-tiana{background:#601e23;color:#f8e9d9;flex-direction:column;gap:14px}
+.tiana-badge{position:absolute;border:1px solid rgba(255,244,230,.27);inset:10%;display:flex;justify-content:center;align-items:center;flex-direction:column}
+.tiana-brand{font-family:Georgia,serif;font-size:clamp(43px,7vw,120px);letter-spacing:-.075em;font-weight:400}
+.tiana-brand small{font:500 clamp(12px,1.15vw,22px) var(--font);letter-spacing:.42em;display:block;text-align:center;margin-top:12px}
+.tiana-gift{position:absolute;bottom:14%;right:14%;width:17%;height:22%;background:#e3c29b;box-shadow:20px 18px 0 rgba(36,4,7,.25);transform:rotate(-9deg);border-radius:3px}
+.tiana-gift:before{content:"";position:absolute;left:47%;top:0;bottom:0;background:#7f3034;width:8%}
+.art-lora{background:radial-gradient(ellipse at 45% 65%,#233d78 0%,#101624 50%,#080c12 85%);color:#dde7fc}
+.lora-orb{position:absolute;width:43%;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 28% 20%,#c8e1ff 0%,#7cb5fc 17%,#3264b6 39%,#0c275c 69%,#050b18 100%);box-shadow:inset -45px -46px 60px rgba(0,0,0,.54),0 30px 100px #1c58a873;filter:saturate(1.14)}
+.lora-caption{position:absolute;left:6%;top:7%;font-size:clamp(24px,4.4vw,75px);font-weight:600;letter-spacing:-.08em}
+.lora-sub{position:absolute;right:6%;bottom:8%;text-align:right;font-size:10px;letter-spacing:.08em;text-transform:uppercase;line-height:1.7}
+.art-ivy{background:#d3a9b5;color:#411b2b;flex-direction:column}
+.ivy-text{font-family:Georgia,serif;font-size:clamp(100px,18vw,330px);font-weight:400;letter-spacing:-.13em;line-height:1;transform:rotate(-6deg);margin-left:-7%}
+.ivy-sub{font-size:12px;text-transform:uppercase;letter-spacing:.3em;position:absolute;bottom:13%;right:9%}
+.art-inspirare{background:#ecebe5;color:#202320;flex-direction:column;align-items:flex-start;padding:9%}
+.inspirare-word{font-family:Georgia,serif;font-size:clamp(45px,8vw,130px);letter-spacing:-.075em;line-height:1.1;overflow-wrap:anywhere}
+.inspirare-word i{font-weight:400}
+.inspirare-sub{position:absolute;bottom:10%;left:9%;font-size:12px}
+.art-ogastv{background:#eae9e4;color:#111;display:block;padding:7%}
+.ogas-head{font-size:clamp(20px,4vw,65px);font-weight:700;letter-spacing:-.08em;border-bottom:3px solid #1c1d1d;padding-bottom:3%}
+.ogas-head span{color:#b51320}
+.ogas-body{display:grid;grid-template-columns:1.7fr 1fr;gap:4%;margin-top:5%;height:64%}
+.ogas-photo{background:linear-gradient(145deg,#a92d26,#421412 75%);display:flex;align-items:end;padding:6%;color:white;font-size:clamp(15px,2.5vw,32px);line-height:1.04;font-weight:650;letter-spacing:-.045em}
+.ogas-lines{display:flex;flex-direction:column;gap:12px}
+.ogas-lines i{display:block;height:13%;border-radius:2px;background:#b9bab2}
+.ogas-lines i:nth-child(2){height:22%;background:#c5c7c0}
+.ogas-lines i:nth-child(4){width:70%}
+.art-botswana{background:#c6e2cc;color:#142819;flex-direction:column}
+.btf-symbol{font-size:clamp(38px,6vw,95px);font-weight:700;letter-spacing:-.1em;position:absolute;top:8%;left:8%}
+.btf-type{position:absolute;bottom:10%;left:8%;font-size:clamp(35px,6.3vw,110px);line-height:.95;font-weight:650;letter-spacing:-.085em}
+.btf-blob{position:absolute;width:52%;height:65%;right:-5%;top:14%;background:#669f70;border-radius:41% 63% 34% 64%;transform:rotate(-30deg)}
+.art-marcel{background:#202124;color:#eae9e5;flex-direction:column}
+.marcel-title{font-size:clamp(60px,10vw,170px);font-weight:600;letter-spacing:-.1em}
+.marcel-sub{font-size:11px;letter-spacing:.13em;text-transform:uppercase;align-self:end;margin-right:11%}
+.art-tiana .remote-img,.art-eatly .remote-img{object-fit:cover}
+.art-motion{background:#581b08;color:#ffecdc;flex-direction:column}
+.motion-disc{border-radius:50%;width:40%;aspect-ratio:1;border:15px solid #d88042;box-shadow:0 0 0 30px #914316,0 0 0 70px #733015;transform:translateX(15%) rotate(-22deg)}
+.motion-title{position:absolute;left:7%;top:8%;font-size:clamp(36px,6vw,110px);font-weight:600;letter-spacing:-.08em}
+.home-spacer{min-height:100px}
+.bottom-meta{display:grid;grid-template-columns:1fr 1fr;gap:20px;padding:19px 0 27px;font-size:11px;font-weight:600;letter-spacing:-.01em}
+.copyright{margin:0}
+.bottom-right{display:flex;justify-content:space-between;gap:20px}
+.social{display:flex;gap:8px;flex-wrap:wrap}
+.social a{position:relative}
+.coordinates{white-space:nowrap;color:var(--secondary)}
+.archive{display:none;min-height:calc(100vh - 150px)}
+.archive-head{display:grid;grid-template-columns:1fr 1fr;padding:145px 0 46px;align-items:end}
+.archive h1{font-size:clamp(82px,15vw,250px);font-weight:500;line-height:.86;letter-spacing:-.1em;margin:0;text-transform:uppercase}
+.archive-head p{max-width:380px;margin:0 0 8px auto;font-size:15px;line-height:1.3;letter-spacing:-.03em}
+.archive-row{display:grid;grid-template-columns:55px 1.6fr 1fr .65fr 34px;gap:20px;align-items:center;min-height:89px;padding:12px 0;border-top:1px solid var(--line);width:100%;text-align:left;background:none}
+.archive-row:last-child{border-bottom:1px solid var(--line)}
+.archive-row:hover .archive-name,.archive-row:focus-visible .archive-name{transform:translateX(7px)}
+.archive-index,.archive-discipline,.archive-year{color:var(--secondary);font-size:11px;text-transform:uppercase}
+.archive-name{font-size:clamp(23px,3vw,43px);letter-spacing:-.07em;font-weight:500;transition:transform .25s}
+.archive-arrow{text-align:right;font-size:21px}
+.archive-return{display:inline-block;margin-top:35px;text-transform:uppercase;font-size:11px;border-bottom:1px solid var(--fg)}
+.view-archive{display:flex;align-items:baseline;justify-content:space-between;border-top:1px solid var(--line);padding:21px 0 0;gap:20px}
+.view-archive p{font-size:12px;max-width:440px;color:var(--secondary);margin:0}
+.view-archive button{padding:0 0 3px;border-bottom:1px solid currentColor;background:none;text-transform:uppercase;font-size:11px;font-weight:600}
+#nav-overlay{position:fixed;z-index:90;inset:0;background:var(--menu);opacity:0;visibility:hidden;pointer-events:none;transition:opacity .4s,visibility .4s;display:flex;flex-direction:column;padding:24px clamp(20px,2.35vw,44px) 29px}
+#nav-overlay.open{opacity:1;visibility:visible;pointer-events:auto}
+.menu-bar{display:flex;justify-content:space-between;align-items:start;font-size:11px;text-transform:uppercase;font-weight:600}
+.menu-close{background:none;padding:0;text-transform:uppercase}
+.menu-main{margin:auto 0;display:flex;flex-direction:column;align-items:flex-start}
+.menu-main button,.menu-main a{background:none;padding:0;text-transform:uppercase;font-size:clamp(55px,11vw,185px);letter-spacing:-.105em;line-height:1.02;font-weight:500;transition:opacity .2s,transform .35s cubic-bezier(.22,1,.36,1);text-align:left}
+.menu-main button:hover,.menu-main a:hover{opacity:.53;transform:translateX(14px)}
+.menu-bottom{display:flex;justify-content:space-between;align-items:end;gap:15px;font-size:11px;text-transform:uppercase;flex-wrap:wrap}
+.theme-toggle{background:none;text-align:left;padding:0;text-transform:uppercase;font-size:11px}
+#detail{position:fixed;inset:0;z-index:75;background:var(--bg);overflow-y:auto;overscroll-behavior:contain;display:none}
+#detail.open{display:block;animation:detail-enter .42s cubic-bezier(.22,1,.36,1) both}
+@keyframes detail-enter{from{opacity:0;transform:translateY(15px)}to{opacity:1;transform:translateY(0)}}
+.detail-nav{display:flex;justify-content:space-between;align-items:center;padding:27px clamp(20px,2.35vw,44px);font-size:11px;font-weight:600;text-transform:uppercase;position:sticky;top:0;z-index:5;background:var(--bg)}
+.detail-nav button{background:none;text-transform:uppercase}
+.detail-hero{padding:90px clamp(20px,2.35vw,44px) 35px;display:grid;grid-template-columns:1fr 1fr;align-items:end}
+.detail-hero h2{font-size:clamp(80px,15vw,240px);font-weight:500;line-height:.9;letter-spacing:-.105em;margin:0}
+.detail-hero p{max-width:430px;margin:0 0 5px auto;font-size:17px;line-height:1.32;letter-spacing:-.035em}
+.detail-art{height:min(68vw,780px);position:relative;overflow:hidden}
+.detail-facts{padding:28px clamp(20px,2.35vw,44px) 100px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px}
+.detail-facts div{border-top:1px solid var(--line);padding-top:10px}
+.fact-label{display:block;color:var(--secondary);text-transform:uppercase;font-size:10px;margin-bottom:13px}
+.fact-value{display:block;font-size:15px;max-width:340px}
+.detail-facts a{text-decoration:underline;text-underline-offset:3px}
+#no-results{display:none;padding:70px 0;text-align:center;color:var(--secondary)}
+@media(max-width:900px){.top{grid-template-columns:1.1fr 1fr 1fr}.header-time{display:none}.hero{min-height:350px}.archive-head{padding-top:110px}.archive-row{grid-template-columns:38px 1.5fr 1fr 45px}.archive-year{display:none}}
+@media(max-width:650px){.shell{padding:0 16px}.top{grid-template-columns:1fr auto;padding-top:19px;min-height:60px}.header-email,.header-time,.nav-archive{display:none}.nav-right{justify-content:end}.hero{min-height:285px;display:block;padding:148px 0 35px}.hero-copy{font-size:21px;max-width:440px}.filterline{align-items:start;padding:13px 0 14px}.filters{font-size:12px}.count{padding-top:3px}.project-grid{grid-template-columns:1fr;gap:3px;margin:0 -16px}.project-card{aspect-ratio:1.14}.project-label{opacity:1;transform:none;bottom:17px;left:16px;right:16px}.project-card::after{opacity:.6}.bottom-meta{grid-template-columns:1fr;gap:25px;padding-bottom:25px}.bottom-right{justify-content:space-between}.home-spacer{min-height:95px}.archive-head{grid-template-columns:1fr;padding:100px 0 36px;gap:30px}.archive h1{font-size:clamp(72px,16vw,120px)}.archive-head p{margin:0;max-width:310px}.archive-row{grid-template-columns:26px 1fr 65px;gap:9px;min-height:76px}.archive-discipline{display:none}.archive-name{font-size:27px}.archive-arrow{font-size:18px}.view-archive{flex-wrap:wrap}.detail-hero{grid-template-columns:1fr;gap:30px;padding-top:85px}.detail-hero h2{font-size:clamp(70px,18vw,140px)}.detail-hero p{margin:0}.detail-art{height:70vh;min-height:420px}.detail-facts{grid-template-columns:1fr;gap:28px}.art-jerin{padding:7%}.jerin-headline{margin:7% 0 6%}.jerin-lane{min-height:115px}.menu-main button,.menu-main a{font-size:clamp(60px,14vw,100px)}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{animation-duration:.001ms!important;transition-duration:.001ms!important}#loader{display:none}}
+</style>
+</head>
+<body>
+<div id="loader" aria-hidden="true"><div class="load-label"><span>MATTHEW EXOUSIA® — SELECTED WORK</span><span id="load-percent">0%</span></div><div class="load-track"><div id="load-bar"></div></div></div>
+<div class="shell" id="site-shell">
+<header class="top">
+<a class="identity" href="#" data-route="home" aria-label="Matthew Exousia, go home">MATTHEW EXOUSIA<span>®</span></a>
+<a class="header-email" href="mailto:matt@inspirarestudio.com">MATT@INSPIRARESTUDIO.COM</a>
+<span class="header-time" id="local-clock" aria-label="Current Lagos time">LAGOS · --:--:--</span>
+<div class="nav-right"><button class="text-button nav-archive" data-route="archive">ARCHIVE</button><button class="menu-button" id="open-menu" aria-expanded="false" aria-controls="nav-overlay">MENU</button></div>
+</header>
+<main id="home">
+<section class="hero" aria-label="Introduction"><h1 class="hero-copy">A product designer and design engineer creating thoughtful digital experiences, identities, and systems for ambitious brands.</h1></section>
+<section aria-label="Selected projects">
+<div class="filterline"><div class="filters" id="filters" aria-label="Filter projects"></div><div class="count" id="work-count">0 PROJECTS</div></div>
+<div class="project-grid" id="project-grid"></div>
+<div id="no-results">Nothing in this category yet.</div>
+</section>
+<div class="home-spacer"></div>
+<div class="view-archive"><p>Selected work, experiments, and things I've designed along the way. More from the archive.</p><button data-route="archive">VIEW FULL ARCHIVE ↗</button></div>
+</main>
+<main id="archive" class="archive">
+<div class="archive-head"><h1>Archive</h1><p>A running collection of digital products, brand expressions and other work from the studio and beyond.</p></div>
+<div id="archive-list"></div>
+<button class="archive-return" data-route="home">← BACK TO WORK</button>
+</main>
+<footer class="bottom-meta">
+<p class="copyright">©2026 MATTHEW EXOUSIA®</p>
+<div class="bottom-right"><div class="social"><a href="https://www.instagram.com/theexousiamatt/" target="_blank" rel="noopener noreferrer">INSTAGRAM,</a><a href="https://x.com/theexousiamatt" target="_blank" rel="noopener noreferrer">X,</a><a href="https://www.linkedin.com/in/theexousiamatt/" target="_blank" rel="noopener noreferrer">LINKEDIN</a></div><span class="coordinates">LAGOS · 6.5244° N, 3.3792° E</span></div>
+</footer>
+</div>
+<nav id="nav-overlay" aria-label="Main menu" aria-hidden="true">
+<div class="menu-bar"><a href="#" data-route="home">MATTHEW EXOUSIA®</a><button class="menu-close" id="close-menu">CLOSE ✕</button></div>
+<div class="menu-main"><button data-route="home">WORK</button><button data-route="archive">ARCHIVE</button><a href="https://inspirarestudio.com/" target="_blank" rel="noopener noreferrer">STUDIO ↗</a><a href="mailto:matt@inspirarestudio.com">CONTACT ↗</a></div>
+<div class="menu-bottom"><button class="theme-toggle" id="theme-toggle" aria-label="Toggle appearance">APPEARANCE: <span id="theme-label">DARK</span> ↗</button><span>BASED IN LAGOS, NIGERIA</span><span>© 2026</span></div>
+</nav>
+<section id="detail" role="dialog" aria-modal="true" aria-label="Project details">
+<div class="detail-nav"><a href="#" class="identity" data-close-detail>MATTHEW EXOUSIA®</a><button id="close-detail" data-close-detail>CLOSE ✕</button></div>
+<div class="detail-hero"><h2 id="detail-title"></h2><p id="detail-description"></p></div>
+<div id="detail-art" class="detail-art"></div>
+<div class="detail-facts"><div><span class="fact-label">PROJECT</span><span class="fact-value" id="detail-project"></span></div><div><span class="fact-label">DISCIPLINE / YEAR</span><span class="fact-value" id="detail-discipline"></span></div><div><span class="fact-label">ONLINE</span><span class="fact-value" id="detail-link"></span></div></div>
+</section>
+<script>
+(function(){
+'use strict';
+var IMG='https://mattt.wtf/gallery/eatly/optimized/view/';
+var projects=[
+{slug:'eatly',title:'Eatly',category:'Digital',tags:['Digital','Art Direction'],year:'2026',art:'eatly',image:IMG+'0AeXnwx3jV6lb0OmMfftIAY3LcY.webp',description:'Digital product and web experience work for a food delivery platform, connecting customers, vendors and riders.'},
+{slug:'tiana',title:'Tiana Gift Shop',category:'Branding',tags:['Branding','Art Direction'],year:'2026',art:'tiana',description:'A warm, gift-led identity with an oxblood and champagne palette, designed around thoughtful presentation.'},
+{slug:'jerin',title:'Jerin',category:'Digital',tags:['Digital','Product'],year:'2026',art:'jerin',description:'A focused project workspace for teams, with customizable workflows, boards, collaboration and task management.'},
+{slug:'lora',title:'Lora',category:'Digital',tags:['Digital','Experiments'],year:'2026',art:'lora',description:'A creative tool exploring dimensional material, lighting and the making of polished 3D compositions.',url:'https://lora.inspirarestudio.com/'},
+{slug:'ivy',title:'Ivy',category:'Web',tags:['Web','Art Direction'],year:'2026',art:'ivy',description:'An expressive, personality-led web experience designed to bring brand collaboration and storytelling into focus.',url:'https://ivyelebesunu.com/'},
+{slug:'inspirare',title:'Inspirare Studio',category:'Branding',tags:['Branding','Web'],year:'2026',art:'inspirare',description:'A creative studio built around thoughtful strategy, identity, websites, and beautifully realized ideas.',url:'https://inspirarestudio.com/'},
+{slug:'ogastv',title:'OgasTV Africa',category:'Web',tags:['Web','Digital'],year:'2026',art:'ogastv',description:'A grassroots-first digital news experience built around stories, local voices, programmes and live coverage.',url:'https://ogastvafrica.ng/'},
+{slug:'botswana',title:'Botswana Tech Fund',category:'Web',tags:['Web','Digital'],year:'2026',art:'botswana',description:'A focused web presence for a venture fund supporting ambitious companies and founders.'},
+{slug:'marcel',title:'Marcel',category:'Web',tags:['Web','Experiments'],year:'2026',art:'marcel',description:'A minimal portfolio designed to foreground motion, visual work and an individual creative practice.',url:'https://marcelvx.space/'}
+];
+var categories=['All','Digital','Branding','Web','Art Direction','Experiments'];
+var currentFilter='All';
+var grid=document.getElementById('project-grid'),filters=document.getElementById('filters'),list=document.getElementById('archive-list');
+var esc=function(s){return String(s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})};
+function artMarkup(p){
+ var s='<div class="art art-'+p.art+'">';
+ if(p.art==='eatly'){s+='<span class="art-title">eatly.</span>';if(p.image)s+='<img class="remote-img" src="'+esc(p.image)+'" alt="Eatly website project artwork" loading="lazy" onerror="this.classList.add(\'is-broken\')">'}
+ if(p.art==='tiana')s+='<div class="tiana-badge"><span class="tiana-brand">Tiana<small>GIFT SHOP</small></span></div><span class="tiana-gift"></span>';
+ if(p.art==='jerin')s+='<div class="jerin-top">jerin.<i>WORKSPACE / 2026</i></div><div class="jerin-headline">A little more in order.</div><div class="jerin-board"><div class="jerin-lane"><strong>UP NEXT</strong><div class="jerin-task"></div><div class="jerin-task"></div></div><div class="jerin-lane"><strong>IN PROGRESS</strong><div class="jerin-task"></div><div class="jerin-task"></div></div><div class="jerin-lane"><strong>COMPLETE</strong><div class="jerin-task"></div><div class="jerin-task"></div></div></div>';
+ if(p.art==='lora')s+='<span class="lora-caption">Lora®</span><span class="lora-orb"></span><span class="lora-sub">FORM / MATERIAL<br>LIGHT / EXPERIMENT</span>';
+ if(p.art==='ivy')s+='<span class="ivy-text">Ivy.</span><span class="ivy-sub">ALL THINGS IVY</span>';
+ if(p.art==='inspirare')s+='<span class="inspirare-word">inspirare<i>®</i></span><span class="inspirare-sub">EVERY GREAT IDEA DESERVES TO BE BEAUTIFULLY REALIZED.</span>';
+ if(p.art==='ogastv')s+='<div class="ogas-head">ogas<span>TV</span> AFRICA</div><div class="ogas-body"><div class="ogas-photo">REAL STORIES.<br>REAL PEOPLE.</div><div class="ogas-lines"><i></i><i></i><i></i><i></i><i></i></div></div>';
+ if(p.art==='botswana')s+='<span class="btf-blob"></span><span class="btf-symbol">BTF.</span><span class="btf-type">BOTSWANA<br>TECH FUND</span>';
+ if(p.art==='marcel')s+='<span class="marcel-title">marcel.</span><span class="marcel-sub">CREATIVE PORTFOLIO</span>';
+ return s+'</div>';
+}
+function paintFilters(){filters.innerHTML='';categories.forEach(function(cat,i){var wrap=document.createElement('span'),b=document.createElement('button');b.className='filter'+(cat===currentFilter?' active':'');b.type='button';b.textContent=cat;b.setAttribute('aria-pressed',cat===currentFilter?'true':'false');b.addEventListener('click',function(){currentFilter=cat;paintFilters();paintGrid()});wrap.appendChild(b);if(i<categories.length-1){var comma=document.createElement('span');comma.className='comma';comma.textContent=',';wrap.appendChild(comma)}filters.appendChild(wrap)})}
+function paintGrid(){
+ var chosen=projects.filter(function(p){return currentFilter==='All'||p.tags.indexOf(currentFilter)!==-1});
+ grid.innerHTML=chosen.map(function(p){return '<button type="button" class="project-card" data-project="'+esc(p.slug)+'" aria-label="Open '+esc(p.title)+' project">'+artMarkup(p)+'<span class="project-label"><span><strong>'+esc(p.title)+'</strong><small>'+esc(p.tags.join(' / '))+' · '+esc(p.year)+'</small></span><b>↗</b></span></button>'}).join('');
+ document.getElementById('work-count').textContent=String(chosen.length).padStart(2,'0')+' PROJECTS';
+ document.getElementById('no-results').style.display=chosen.length?'none':'block';
+ grid.querySelectorAll('[data-project]').forEach(function(b){b.addEventListener('click',function(){openDetail(b.getAttribute('data-project'))})});
+}
+function paintArchive(){
+ list.innerHTML=projects.map(function(p,i){return '<button type="button" class="archive-row" data-project="'+esc(p.slug)+'"><span class="archive-index">'+String(i+1).padStart(2,'0')+'</span><span class="archive-name">'+esc(p.title)+'</span><span class="archive-discipline">'+esc(p.tags.join(' / '))+'</span><span class="archive-year">'+esc(p.year)+'</span><span class="archive-arrow">↗</span></button>'}).join('');
+ list.querySelectorAll('[data-project]').forEach(function(b){b.addEventListener('click',function(){openDetail(b.getAttribute('data-project'))})});
+}
+var prevFocus=null,prevOverflow='';
+function lockBody(){prevOverflow=document.body.style.overflow;document.body.style.overflow='hidden'}
+function unlockBody(){document.body.style.overflow=prevOverflow}
+function openDetail(slug){
+ var p=projects.find(function(x){return x.slug===slug});if(!p)return;
+ closeMenu();prevFocus=document.activeElement;
+ document.getElementById('detail-title').textContent=p.title;
+ document.getElementById('detail-description').textContent=p.description;
+ document.getElementById('detail-project').textContent=p.title;
+ document.getElementById('detail-discipline').textContent=p.tags.join(' / ')+' · '+p.year;
+ document.getElementById('detail-art').innerHTML=artMarkup(p);
+ document.getElementById('detail-link').innerHTML=p.url?'<a href="'+esc(p.url)+'" target="_blank" rel="noopener noreferrer">VISIT PROJECT ↗</a>':'SELECTED WORK / 2026';
+ var d=document.getElementById('detail');d.classList.add('open');d.scrollTop=0;lockBody();document.getElementById('close-detail').focus();
+}
+function closeDetail(){var d=document.getElementById('detail');if(!d.classList.contains('open'))return;d.classList.remove('open');unlockBody();if(prevFocus&&prevFocus.focus)prevFocus.focus()}
+document.querySelectorAll('[data-close-detail]').forEach(function(el){el.addEventListener('click',function(e){e.preventDefault();closeDetail()})});
+var menu=document.getElementById('nav-overlay');
+function openMenu(){closeDetail();menu.classList.add('open');menu.setAttribute('aria-hidden','false');document.getElementById('open-menu').setAttribute('aria-expanded','true');lockBody();document.getElementById('close-menu').focus()}
+function closeMenu(){if(!menu.classList.contains('open'))return;menu.classList.remove('open');menu.setAttribute('aria-hidden','true');document.getElementById('open-menu').setAttribute('aria-expanded','false');unlockBody()}
+document.getElementById('open-menu').addEventListener('click',openMenu);
+document.getElementById('close-menu').addEventListener('click',closeMenu);
+function route(which){closeMenu();closeDetail();var archive=which==='archive';document.getElementById('home').style.display=archive?'none':'block';document.getElementById('archive').style.display=archive?'block':'none';window.location.hash=archive?'archive':'';document.title=(archive?'Archive — ':'')+'Matthew Exousia® — Product Designer & Design Engineer';window.scrollTo({top:0,behavior:'instant'})}
+document.querySelectorAll('[data-route]').forEach(function(el){el.addEventListener('click',function(e){e.preventDefault();route(el.getAttribute('data-route'))})});
+window.addEventListener('hashchange',function(){var target=window.location.hash.slice(1);route(target==='archive'?'archive':'home')});
+window.addEventListener('keydown',function(e){if(e.key==='Escape'){closeDetail();closeMenu()}});
+function clock(){document.getElementById('local-clock').textContent='LAGOS · '+new Intl.DateTimeFormat('en-GB',{timeZone:'Africa/Lagos',hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false}).format(new Date())}
+clock();setInterval(clock,1000);
+var userTheme='';try{userTheme=localStorage.getItem('matt-slab-theme')||''}catch(e){}
+var localHour=Number(new Intl.DateTimeFormat('en-GB',{timeZone:'Africa/Lagos',hour:'2-digit',hourCycle:'h23'}).format(new Date()));
+var theme=userTheme||((localHour>=7&&localHour<18)?'light':'dark');
+function paintTheme(){document.documentElement.setAttribute('data-theme',theme);document.getElementById('theme-label').textContent=theme.toUpperCase();document.querySelector('meta[name="theme-color"]').setAttribute('content',theme==='light'?'#efefeb':'#111211')}
+paintTheme();
+document.getElementById('theme-toggle').addEventListener('click',function(){theme=theme==='dark'?'light':'dark';try{localStorage.setItem('matt-slab-theme',theme)}catch(e){}paintTheme()});
+paintFilters();paintGrid();paintArchive();
+if(location.hash==='#archive')route('archive');
+var loader=document.getElementById('loader'),num=document.getElementById('load-percent'),bar=document.getElementById('load-bar'),start=performance.now();
+if(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches){loader.classList.add('done')}else{
+function tick(now){var t=Math.min(1,(now-start)/760);var progress=Math.floor((1-Math.pow(1-t,2.2))*100);num.textContent=progress+'%';bar.style.width=progress+'%';if(t<1)requestAnimationFrame(tick);else setTimeout(function(){loader.classList.add('done')},150)}
+requestAnimationFrame(tick)}
+})();
+</script>
+</body>
+</html>
