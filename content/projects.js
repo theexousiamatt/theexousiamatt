@@ -111,8 +111,14 @@ window.PORTFOLIO_PROJECTS = [
     "overview": "A project workspace exploring how teams keep work, tasks and collaboration in order.",
     "challenge": "Project workflows quickly become fragmented when task stages, ownership and approvals are difficult to follow.",
     "approach": "The interface concentrates on clear project cards, flexible stages, shared context and calm, practical interaction patterns.",
-    "outcome": "A product in active development. This case study describes the direction without inventing performance or adoption numbers.",
-    "gallery": [],
+    "outcome": "The current product is being rebranded from Ordo to Jerin. The image shown is an earlier workspace design exploration, not the final Jerin brand or UI.",
+    "gallery": [
+      {
+        "src": "/media/jerin-early-ux.png",
+        "caption": "Early product interface study, created under the previous Ordo name",
+        "ratio": "portrait"
+      }
+    ],
     "url": null
   },
   {
@@ -131,13 +137,24 @@ window.PORTFOLIO_PROJECTS = [
     ],
     "location": "Lagos, Nigeria",
     "featured": true,
-    "cover": null,
+    "cover": "/media/tiana-identity.png",
     "art": "tiana",
     "overview": "A considered gift-shop identity built around presentation, detail and the feeling of receiving something thoughtful.",
     "challenge": "The visual identity needed to express warmth and quality across packaging, printed elements and gift moments.",
     "approach": "The system pairs an oxblood-led palette with soft champagne tones and deliberate applications across the packaging experience.",
-    "outcome": "A developing collection of brand and packaging applications. Final approved campaign images can be added without restructuring the page.",
-    "gallery": [],
+    "outcome": "The identity system includes distinct oxblood, ivory and champagne applications, with print and packaging artwork designed for gift-led experiences.",
+    "gallery": [
+      {
+        "src": "/media/tiana-bag.png",
+        "caption": "Printed bag and gift presentation artwork",
+        "ratio": "portrait"
+      },
+      {
+        "src": "/media/tiana-sticker.png",
+        "caption": "Tiana Gift Shop pattern and identity application",
+        "ratio": "portrait"
+      }
+    ],
     "url": null
   },
   {

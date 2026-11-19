@@ -1,32 +1,27 @@
-# theexousiamatt.com — Slab-inspired portfolio
+# The Exousia Matt — Slab-inspired portfolio
 
-This branch is a separate, custom-coded portfolio for theexousiamatt.com.
-It is **not** the original Framer project or a CMS export.
-The existing mattt.wtf portfolio is unchanged.
+This branch is the custom-coded portfolio deployed to **theexousiamatt.com**.
+
+## Status
+- Independent static website; it does not change the existing mattt.wtf portfolio.
+- Home, visual archive and 9 project detail routes.
+- Responsive layouts, project category filters, menu, color theme, Lagos clock.
+- Case study content stored in `content/projects.js`.
+- Self-hosted project imagery for Eatly and Botswana Tech Fund, plus Tiana artwork exported from the owner's Figma file.
+- The Jerin case study includes an explicitly labeled archival Ordo UI study. This is not presented as final Jerin branding.
+- Remaining project previews use restrained typographic treatments until actual approved project imagery is provided.
+- These case studies are editorial presentations; this site does not duplicate Framer's native CMS.
+
+## Updating projects
+Edit `content/projects.js`, and add approved files to `media/`. Every project has a prerendered HTML route under `projects/[slug]/index.html`. Keep the two in sync if routes are renamed.
 
 ## Deployment
-Hostinger site: theexousiamatt.com
-Git source: theexousiamatt/theexousiamatt
+Hostinger website: theexousiamatt.com
+Repository: theexousiamatt/theexousiamatt
 Branch: site/theexousiamatt-slab
-Type: static HTML
-Auto-deploy: enabled
+Auto deployment: enabled, static.
 
-## Editing
-All site code, styling, project data, and interactions are in `index.html`.
-Find `var projects=[` to edit project titles, descriptions, tags, year, links and cover artwork.
-Replace illustrative treatment panels with approved project imagery when ready.
-
-The Eatly project currently tries to load one portfolio image from mattt.wtf.
-It has a built-in CSS fallback if that cross-site image cannot load.
-
-## Features
-- Responsive grid, archive, and discipline filters
-- Menu overlay, light/dark mode toggle with Lagos time-based default
-- Lagos clock, preloader, project detail panels
-- SEO/OG tags, social links and email contact
-- Reduced-motion support
-
-## Notes
-This implementation recreates the visual direction of the free Slab Framer template,
-but does not provide the template's original Framer CMS or identical scroll transitions.
-The initial project artwork includes editorial treatment panels rather than final client-approved project cover exports.
+## Outstanding verification
+- Visual browser QA across common viewport widths and browsers (not completed in the connector environment).
+- Verify full reference fidelity against Slab's own Framer interactions.
+- Complete authentic visuals for the remaining projects.
