@@ -5,7 +5,7 @@ const root=document.getElementById('app');
 const shell=document.getElementById('shell');
 const overlay=document.getElementById('navigation');
 const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-const categories=['All','Digital','Print','Motion','Art Direction'];
+const categories=['All','Digital','Branding','Web','Art Direction'];
 let selected='All', lastFocus=null, previousOverflow='';
 const clean=(str)=>String(str??'').replace(/[&<>"']/g,s=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;','\'':'&#39;'}[s]));
 const projectUrl=p=>'/projects/'+encodeURIComponent(p.slug)+'/';
@@ -13,13 +13,29 @@ const findProject=slug=>projects.find(p=>p.slug===slug);
 const img=(path,alt,extra='')=>'<img src="'+clean(path)+'" alt="'+clean(alt)+'" '+extra+'>';
 function cover(p,opts={}){
   if(p.cover){
+    const loading=opts.lead?'data-first="true" fetchpriority="high"':'loading="lazy" decoding="async"';
+    if(p.slug==='ivy'){
+      return '<div class="cover cover-ivy" data-cover="portrait"><span class="ivy-type">Ivy.</span><div class="ivy-portrait">'+
+        img(p.cover,'Ivy Elebesunu — approved website portrait',loading)+'</div><span class="ivy-caption">FINANCE / TECH / CAREERS</span></div>';
+    }
+    if(p.slug==='lora'){
+      return '<div class="cover cover-lora" data-cover="studio"><span class="lora-ambient"></span>'+
+        '<span class="lora-head">Lora.</span><span class="lora-badge">3D STUDIO®</span><div class="lora-mark">'+
+        img(p.cover,'Original Lora 3D Studio brand mark',loading)+'</div>'+
+        '<span class="lora-sub">MATERIAL / FORM<br>LIGHT / COMPOSITION</span></div>';
+    }
+    if(p.slug==='jerin'){
+      return '<div class="cover cover-jerin" data-cover="product"><span class="jerin-overline"><span>JERIN®</span><span>WORKSPACE / 2026</span></span>'+
+        '<div class="jerin-interface">'+img(p.cover,'Earlier Ordo workspace UI, from before its rebrand to Jerin',loading)+'</div>'+
+        '<span class="jerin-footnote">EARLIER PRODUCT DESIGN STUDY · ORDO</span></div>';
+    }
     const mode=p.slug==='botswana-tech-fund'?'website':'photo';
-    return '<div class="cover cover-'+clean(p.slug)+'" data-cover="'+mode+'">'+img(p.cover,p.title+' portfolio artwork',opts.lead?'data-first="true" fetchpriority="high"':'loading="lazy"')+'</div>';
+    return '<div class="cover cover-'+clean(p.slug)+'" data-cover="'+mode+'">'+img(p.cover,p.title+' project image',loading)+'</div>';
   }
   return '<div class="cover cover-'+clean(p.art||p.slug)+'">'+
-  '<span class="cover-kicker"><span>MATTHEW EXOUSIA®</span><span>'+clean(p.year)+'</span></span>'+
-  '<span class="cover-title">'+clean(p.title)+'</span>'+
-  '<span class="cover-statement">'+clean(p.services.slice(0,2).join(' / '))+'</span></div>';
+   '<span class="cover-kicker"><span>MATTHEW EXOUSIA®</span><span>'+clean(p.year)+'</span></span>'+
+   '<span class="cover-title">'+clean(p.title)+'</span>'+
+   '<span class="cover-statement">'+clean(p.services.slice(0,2).join(' / '))+'</span></div>';
 }
 function card(p,kind='work',i=0){
   const cls=kind==='archive'?'archive-tile':'project-tile';
@@ -27,6 +43,25 @@ function card(p,kind='work',i=0){
      (kind==='archive'?'<span class="archive-info"><strong>'+clean(p.title)+'</strong><span>'+clean(p.category)+' ↗</span></span>'
      :'<span class="tile-label"><span><strong class="tile-name">'+clean(p.title)+'</strong><small class="tile-type">'+clean(p.tags.join(' / '))+' · '+clean(p.year)+'</small></span><span class="tile-arrow">↗</span></span>')+
      '</a>';
+}
+function enhanceMaskedRollovers(){
+  const elements=document.querySelectorAll('.site-header .wordmark,.site-header .header-mail,.site-header .nav-archive,.site-footer .socials a,.filter');
+  elements.forEach(el=>{
+    if(el.classList.contains('roll-link'))return;
+    const label=(el.textContent||'').trim();
+    if(!label)return;
+    el.setAttribute('aria-label',label);
+    const mask=document.createElement('span'),track=document.createElement('span');
+    mask.className='roll-window';track.className='roll-track';
+    for(let i=0;i<2;i++){
+      const copy=document.createElement('span');
+      copy.className='roll-copy';
+      copy.textContent=label;
+      if(i===1)copy.setAttribute('aria-hidden','true');
+      track.appendChild(copy);
+    }
+    mask.appendChild(track);el.textContent='';el.appendChild(mask);el.classList.add('roll-link');
+  });
 }
 function renderHome(){
 const filtered=projects.filter(p=>p.featured&& (selected==='All'||p.tags.includes(selected)));
@@ -37,6 +72,7 @@ root.innerHTML='<main id="main-content"><section class="hero"><h1 class="hero-in
 (filtered.length?'<div class="work-grid">'+filtered.map((p,i)=>card(p,'work',i)).join('')+'</div>':'<div class="no-results" style="display:block">No published projects in this category yet.</div>')+'</section>'+
 '<section class="intro-end"><p>A growing collection of projects, selected experiments and work from the studio and beyond.</p><a class="underline-link" href="/archive/">VIEW FULL ARCHIVE ↗</a></section></main>';
 root.querySelectorAll('[data-filter]').forEach(btn=>btn.addEventListener('click',()=>{selected=btn.dataset.filter;renderHome()}));
+enhanceMaskedRollovers();
 addReveal();setMeta('Matthew Exousia® — Selected Work','A product designer and design engineer based in Lagos. Selected digital, web and brand work.');
 }
 function renderArchive(){
@@ -81,6 +117,10 @@ const targets=[...root.querySelectorAll('.case-story,.story-note,.media-frame,.a
 const observer=new IntersectionObserver(entries=>{for(const e of entries)if(e.isIntersecting){e.target.classList.add('visible');observer.unobserve(e.target)}},{threshold:0.07,rootMargin:'0px 0px 65px 0px'});
 targets.forEach(t=>{t.classList.add('reveal');observer.observe(t)});
 }
+const themeGlyphs={
+  dark:'<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke-width="1.6" stroke-linecap="round"><path d="M20.2 16.4A8.7 8.7 0 0 1 7.6 3.8a8.8 8.8 0 1 0 12.6 12.6Z"/></svg>',
+  light:'<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke-width="1.6" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2m10-10h-2M4 12H2m17-7-1.5 1.5M6.5 17.5 5 19m14 0-1.5-1.5M6.5 6.5 5 5"/></svg>'
+};
 function formatClock(){
 const node=document.getElementById('clock');if(!node)return;
 node.textContent=new Intl.DateTimeFormat('en-US',{hour:'numeric',minute:'2-digit',second:'2-digit',hour12:true,timeZone:'Africa/Lagos'}).format(new Date()).toLowerCase();
@@ -94,7 +134,7 @@ if(clockNode){
   themeControl.type='button';
   themeControl.id='header-theme-toggle';
   themeControl.className='header-theme-toggle';
-  themeControl.textContent='☾';
+  themeControl.innerHTML=themeGlyphs.dark;
   themeControl.setAttribute('aria-label','Switch between dark and light mode');
   themeControl.addEventListener('click',()=>document.getElementById('theme-toggle')?.click());
   wrapper.appendChild(themeControl);
@@ -107,8 +147,8 @@ let theme=stored||'dark';
 function paintTheme(){
 document.documentElement.dataset.theme=theme;
 const label=document.getElementById('theme-value');if(label)label.textContent=theme;
-const icon=document.getElementById('header-theme-toggle');if(icon)icon.textContent=theme==='dark'?'☾':'☀';
-document.querySelector('meta[name="theme-color"]')?.setAttribute('content',theme==='light'?'#f1f1ed':'#111210');
+const icon=document.getElementById('header-theme-toggle');if(icon)icon.innerHTML=themeGlyphs[theme];
+document.querySelector('meta[name="theme-color"]')?.setAttribute('content',theme==='light'?'#f1f1ed':'#0f0f0f');
 }
 paintTheme();
 document.getElementById('theme-toggle')?.addEventListener('click',()=>{theme=theme==='light'?'dark':'light';try{localStorage.setItem('matt-portfolio-theme',theme)}catch(e){}paintTheme()});
@@ -139,6 +179,7 @@ const path=decodeURIComponent(location.pathname).replace(/\/+$/,'')||'/';
 if(path==='/archive')renderArchive();
 else if(path.startsWith('/projects/')){const slug=path.split('/')[2];const p=findProject(slug);if(p)renderCase(p);else {renderArchive();document.title='Project not found — Matthew Exousia®';}}
 else renderHome();
+enhanceMaskedRollovers();
 function loader(){
 const screen=document.getElementById('load-screen');if(!screen)return;
 const bar=document.getElementById('load-bar'),label=document.getElementById('load-label');

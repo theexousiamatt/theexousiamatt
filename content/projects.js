@@ -1,4 +1,4 @@
-/* Portfolio projects; featured work matches the six-card Slab Figma homepage. */
+/* Published portfolio projects. Only tag projects for actual disciplines. */
 window.PORTFOLIO_PROJECTS = [
   {
     "slug": "eatly",
@@ -106,12 +106,12 @@ window.PORTFOLIO_PROJECTS = [
     ],
     "location": "Lagos, Nigeria",
     "featured": true,
-    "cover": null,
+    "cover": "/media/jerin-early-ux.png",
     "art": "jerin",
     "overview": "A project workspace exploring how teams keep work, tasks and collaboration in order.",
     "challenge": "Project workflows quickly become fragmented when task stages, ownership and approvals are difficult to follow.",
     "approach": "The interface concentrates on clear project cards, flexible stages, shared context and calm, practical interaction patterns.",
-    "outcome": "The current product is being rebranded from Ordo to Jerin. The image shown is an earlier workspace design exploration, not the final Jerin brand or UI.",
+    "outcome": "An evolving collaboration product being rebranded from Ordo to Jerin. The work shown is an earlier Ordo workspace exploration and is not presented as final Jerin UI.",
     "gallery": [
       {
         "src": "/media/jerin-early-ux.png",
@@ -138,13 +138,23 @@ window.PORTFOLIO_PROJECTS = [
     ],
     "location": "Lagos, Nigeria",
     "featured": true,
-    "cover": "/media/tiana-identity.png",
+    "cover": "/media/tiana-hero.png",
     "art": "tiana",
     "overview": "A considered gift-shop identity built around presentation, detail and the feeling of receiving something thoughtful.",
     "challenge": "The visual identity needed to express warmth and quality across packaging, printed elements and gift moments.",
     "approach": "The system pairs an oxblood-led palette with soft champagne tones and deliberate applications across the packaging experience.",
     "outcome": "The identity system includes distinct oxblood, ivory and champagne applications, with print and packaging artwork designed for gift-led experiences.",
     "gallery": [
+      {
+        "src": "/media/tiana-bag-shot.png",
+        "caption": "Branded gift bag — packaging presentation",
+        "ratio": "landscape"
+      },
+      {
+        "src": "/media/tiana-graphic.png",
+        "caption": "Tiana Gift Shop campaign art direction",
+        "ratio": "landscape"
+      },
       {
         "src": "/media/tiana-bag.png",
         "caption": "Printed bag and gift presentation artwork",
@@ -165,8 +175,7 @@ window.PORTFOLIO_PROJECTS = [
     "category": "Web",
     "tags": [
       "Web",
-      "Art Direction",
-      "Motion"
+      "Art Direction"
     ],
     "services": [
       "Web design",
@@ -175,13 +184,19 @@ window.PORTFOLIO_PROJECTS = [
     ],
     "location": "Lagos, Nigeria",
     "featured": true,
-    "cover": null,
+    "cover": "/media/ivy-figma-portrait.png",
     "art": "ivy",
     "overview": "A personality-led portfolio for Ivy, balancing expressive storytelling with straightforward collaboration enquiries.",
     "challenge": "A creator's website should communicate personality without making brand partnerships and professional enquiries difficult to navigate.",
     "approach": "The experience focuses on visual expression, purposeful movement, work highlights and more accessible pathways to collaborate.",
     "outcome": "A live web experience for exploring work and brand partnerships.",
-    "gallery": [],
+    "gallery": [
+      {
+        "src": "/media/ivy-figma-portrait.png",
+        "caption": "Ivy website — approved hero portrait",
+        "ratio": "portrait"
+      }
+    ],
     "url": "https://ivyelebesunu.com/"
   },
   {
@@ -200,13 +215,19 @@ window.PORTFOLIO_PROJECTS = [
     ],
     "location": "Lagos, Nigeria",
     "featured": true,
-    "cover": null,
+    "cover": "/media/lora-symbol.svg",
     "art": "lora",
     "overview": "A visual creation tool for experimenting with materials, lighting and 3D presentation.",
     "challenge": "Creative tools become difficult to use when canvas controls and export options are buried or inconsistent.",
     "approach": "The interface explores direct manipulation, scene backgrounds, material libraries and clear controls around output.",
     "outcome": "An ongoing product exploration with working visual creation workflows.",
-    "gallery": [],
+    "gallery": [
+      {
+        "src": "/media/lora-symbol.svg",
+        "caption": "Original Lora brand symbol, from the product repository",
+        "ratio": "portrait"
+      }
+    ],
     "url": "https://lora.inspirarestudio.com/"
   },
   {
@@ -266,8 +287,7 @@ window.PORTFOLIO_PROJECTS = [
     "year": "2026",
     "category": "Web",
     "tags": [
-      "Web",
-      "Motion"
+      "Web"
     ],
     "services": [
       "Web design",
