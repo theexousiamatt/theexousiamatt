@@ -5,7 +5,7 @@ const root=document.getElementById('app');
 const shell=document.getElementById('shell');
 const overlay=document.getElementById('navigation');
 const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-const categories=['All','Digital','Branding','Web','Art Direction'];
+const categories=['All','Digital','Print','Motion','Art Direction'];
 let selected='All', lastFocus=null, previousOverflow='';
 const clean=(str)=>String(str??'').replace(/[&<>"']/g,s=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;','\'':'&#39;'}[s]));
 const projectUrl=p=>'/projects/'+encodeURIComponent(p.slug)+'/';
@@ -83,15 +83,31 @@ targets.forEach(t=>{t.classList.add('reveal');observer.observe(t)});
 }
 function formatClock(){
 const node=document.getElementById('clock');if(!node)return;
-node.textContent=new Intl.DateTimeFormat('en-GB',{hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false,timeZone:'Africa/Lagos'}).format(new Date())+' · LAGOS';
+node.textContent=new Intl.DateTimeFormat('en-US',{hour:'numeric',minute:'2-digit',second:'2-digit',hour12:true,timeZone:'Africa/Lagos'}).format(new Date()).toLowerCase();
+}
+const clockNode=document.getElementById('clock');
+if(clockNode){
+  const wrapper=document.createElement('span');
+  wrapper.className='header-appearance';
+  clockNode.parentNode.insertBefore(wrapper,clockNode);
+  const themeControl=document.createElement('button');
+  themeControl.type='button';
+  themeControl.id='header-theme-toggle';
+  themeControl.className='header-theme-toggle';
+  themeControl.textContent='☾';
+  themeControl.setAttribute('aria-label','Switch between dark and light mode');
+  themeControl.addEventListener('click',()=>document.getElementById('theme-toggle')?.click());
+  wrapper.appendChild(themeControl);
+  wrapper.appendChild(clockNode);
 }
 formatClock();setInterval(formatClock,1000);
 let stored='';
 try{stored=localStorage.getItem('matt-portfolio-theme')||''}catch(e){}
-let theme=stored||((new Date().getHours()>=7&&new Date().getHours()<18)?'light':'dark');
+let theme=stored||'dark';
 function paintTheme(){
 document.documentElement.dataset.theme=theme;
 const label=document.getElementById('theme-value');if(label)label.textContent=theme;
+const icon=document.getElementById('header-theme-toggle');if(icon)icon.textContent=theme==='dark'?'☾':'☀';
 document.querySelector('meta[name="theme-color"]')?.setAttribute('content',theme==='light'?'#f1f1ed':'#111210');
 }
 paintTheme();
