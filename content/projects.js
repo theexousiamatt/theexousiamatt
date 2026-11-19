@@ -1,4 +1,4 @@
-/* Structured portfolio content; add or reorder projects here. */
+/* Portfolio projects; featured work matches the six-card Slab Figma homepage. */
 window.PORTFOLIO_PROJECTS = [
   {
     "slug": "eatly",
@@ -128,7 +128,8 @@ window.PORTFOLIO_PROJECTS = [
     "category": "Branding",
     "tags": [
       "Branding",
-      "Art Direction"
+      "Art Direction",
+      "Print"
     ],
     "services": [
       "Brand identity",
@@ -164,7 +165,8 @@ window.PORTFOLIO_PROJECTS = [
     "category": "Web",
     "tags": [
       "Web",
-      "Art Direction"
+      "Art Direction",
+      "Motion"
     ],
     "services": [
       "Web design",
@@ -222,7 +224,7 @@ window.PORTFOLIO_PROJECTS = [
       "Content experience"
     ],
     "location": "Nigeria",
-    "featured": true,
+    "featured": false,
     "cover": null,
     "art": "ogastv",
     "overview": "A digital media platform built to foreground grassroots stories, local voices and live programming.",
@@ -248,7 +250,7 @@ window.PORTFOLIO_PROJECTS = [
       "Web experience"
     ],
     "location": "Lagos, Nigeria",
-    "featured": true,
+    "featured": false,
     "cover": null,
     "art": "inspirare",
     "overview": "The creative studio's own identity and digital expression, built around the belief that ideas deserve to be beautifully realized.",
@@ -264,7 +266,8 @@ window.PORTFOLIO_PROJECTS = [
     "year": "2026",
     "category": "Web",
     "tags": [
-      "Web"
+      "Web",
+      "Motion"
     ],
     "services": [
       "Web design",
