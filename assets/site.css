@@ -152,3 +152,53 @@ header.site-header{display:grid;grid-template-columns:1.25fr 1fr .7fr 1fr;gap:22
 @media(prefers-reduced-motion:reduce){
 .next-project .cover,.next-project .next-title{transform:none;opacity:1}
 }
+
+
+/* FIGMA 523:587 — Slab desktop proportions (1440 x 2052).
+   Content is personalized; geometry follows the supplied reference. */
+.header-appearance{display:flex;align-items:center;gap:9px}
+.header-theme-toggle{border:0;padding:0;display:inline-grid;place-items:center;min-width:17px;min-height:17px;background:none;color:inherit;font-size:17px;line-height:1;cursor:pointer}
+@media (min-width:621px){
+  .shell{padding-inline:8px}
+  header.site-header{
+    padding:8px 8px 0;
+    min-height:32px;
+    grid-template-columns:30% 34% minmax(0,1fr) auto;
+    gap:0;
+    align-items:start
+  }
+  header.site-header .wordmark,header.site-header .header-mail,
+  header.site-header .clock,header.site-header .small-action{
+    font-size:10px;line-height:14px;letter-spacing:-.015em
+  }
+  header.site-header .clock{display:inline;font-weight:500;color:var(--fg)}
+  header.site-header .top-right{justify-content:flex-end}
+  header.site-header #menu-trigger{display:none}
+  .hero{min-height:220px;padding:88px 0 0;align-items:start;grid-template-columns:1fr 1fr}
+  .hero-intro{font-size:17px;line-height:1.27;letter-spacing:-.035em;max-width:400px}
+  .filterbar{border-top:0;min-height:43px;padding:1px 0 8px;align-items:center}
+  .filter{font-size:17px;line-height:26px;letter-spacing:-.038em}
+  .filter:after{margin:0 7px 0 2px}
+  .count{display:none}
+  .work-grid{margin:0;gap:8px;grid-template-columns:repeat(2,minmax(0,1fr))}
+  .project-tile{aspect-ratio:708/538}
+  .archive-grid{margin-inline:-8px}
+  .case-cover,.media-sequence,.media-pending,.next-wrap{margin-inline:-8px}
+  .site-footer{grid-template-columns:41.5% 1fr;padding:16px 8px 24px}
+  .footer-right{justify-content:space-between}
+}
+#main-content>.intro-end{display:none}
+body:has(.hero) .site-footer{margin-top:64px}
+@media (max-width:620px){
+  .header-appearance{display:none}
+  header.site-header .top-right{justify-content:flex-end}
+  .hero{min-height:265px;padding:132px 0 28px}
+  .hero-intro{font-size:19px}
+  .filterbar{border-top:0;padding:0 0 10px}
+  .filter{font-size:14px;line-height:24px}
+  .count{display:none}
+  .work-grid{gap:8px;margin-inline:0}
+  .project-tile{aspect-ratio:1.12}
+  .site-footer{margin-top:0}
+  .archive-grid{gap:8px}
+}
