@@ -3,7 +3,6 @@
 const projects = Array.isArray(window.PORTFOLIO_PROJECTS) ? window.PORTFOLIO_PROJECTS : [];
 if(!projects.length)return;
 const root=document.getElementById('app');
-const shell=document.getElementById('shell');
 const overlay=document.getElementById('navigation');
 const motionPreference=window.matchMedia('(prefers-reduced-motion: reduce)');
 // Ease wheel input while keeping the document's native scroll position.
@@ -65,7 +64,6 @@ function enableSmoothWheel(){
 }
 enableSmoothWheel();
 const categories=['All','Digital','Branding','Web','Art Direction'];
-let lastFocus=null;
 const clean=(str)=>String(str??'').replace(/[&<>"']/g,s=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;','\'':'&#39;'}[s]));
 const projectUrl=p=>'/projects/'+encodeURIComponent(p.slug)+'/';
 const findProject=slug=>projects.find(p=>p.slug===slug);
@@ -182,22 +180,30 @@ function renderArchive(){
   updateDensity();
 }
 function renderCase(p){
-const idx=projects.findIndex(x=>x.slug===p.slug);
-const next=projects[(idx+1)%projects.length];
-const media=p.gallery||[];
-const lead=p.cover ? cover(p,{lead:true}) : cover(p);
-const gallery=media.map((g,i)=>'<figure class="media-frame '+clean(g.ratio==='landscape'?'wide':'portrait')+'">'+img(g.src,g.caption||p.title+' design image','loading="lazy" decoding="async"')+'<figcaption>'+String(i+1).padStart(2,'0')+' / '+clean(g.caption)+'</figcaption></figure>').join('');
-root.innerHTML='<main id="main-content" tabindex="-1" class="case-page"><div class="case-cover">'+lead+'</div>'+
-'<section class="case-heading"><h1>'+clean(p.title)+'</h1><p class="headline-overview">'+clean(p.overview)+'</p></section>'+
-'<section class="case-facts" aria-label="Project facts"><div><span class="mini-label">DATE</span><p>'+clean(p.year)+'</p></div>'+
-(p.location?'<div><span class="mini-label">LOCATION</span><p>'+clean(p.location)+'</p></div>':'')+
-'<div><span class="mini-label">SERVICES</span><p>'+p.services.map(x=>'<span>'+clean(x)+'</span>').join('')+'</p>'+
-(p.url?'<p style="margin-top:18px"><a href="'+clean(p.url)+'" target="_blank" rel="noopener noreferrer">VISIT WEBSITE '+pixelIcon('external')+'</a></p>':'')+'</div></section>'+
-'<section class="case-story"><h2>THE BRIEF</h2><div class="story-copy"><h3>'+clean(p.overview)+'</h3><div class="story-columns"><div><h4>THE CHALLENGE</h4><p>'+clean(p.challenge)+'</p></div><div><h4>OUR APPROACH</h4><p>'+clean(p.approach)+'</p></div></div></div></section>'+
-(media.length?'<section class="media-sequence" aria-label="'+clean(p.title)+' selected visuals">'+gallery+'</section>':p.url?'<section class="case-live"><p>EXPLORE THE PROJECT</p><a href="'+clean(p.url)+'" target="_blank" rel="noopener noreferrer">VIEW LIVE EXPERIENCE '+pixelIcon('external')+'</a></section>':'')+
-'<section class="story-note"><h2>THE WORK</h2><div class="note-copy"><strong>Made to move the work forward.</strong><p>'+clean(p.outcome)+'</p></div></section>'+
-'<section class="next-wrap" aria-label="Next project"><div class="next-overline"><span>UP NEXT</span><span>'+clean(next.category)+' / '+clean(next.year)+'</span></div>'+
-'<a class="next-project" href="'+projectUrl(next)+'" aria-label="View next project: '+clean(next.title)+'">'+cover(next)+'<span class="next-title"><strong>'+clean(next.title)+'</strong>'+pixelIcon('right')+'</span><span class="next-progress" aria-hidden="true"></span></a></section></main>';
+  const next=projects[(projects.indexOf(p)+1)%projects.length];
+  const media=(p.gallery||[]).filter(item=>item.src!==p.cover);
+  const gallery=media.map(item=>{
+    const layout=item.ratio==='landscape'?'wide':'portrait';
+    const caption=item.caption?'<figcaption>'+clean(item.caption)+'</figcaption>':'';
+    return '<figure class="media-frame '+layout+'"><div class="media-image">'+
+      img(item.src,item.caption||p.title+' design image','loading="lazy" decoding="async"')+'</div>'+caption+'</figure>';
+  }).join('');
+  const website=p.url?'<a class="case-website" href="'+clean(p.url)+'" target="_blank" rel="noopener noreferrer">Visit website '+pixelIcon('external')+'</a>':'';
+
+  root.innerHTML='<main id="main-content" tabindex="-1" class="case-page">'+
+    '<div class="case-heading case-inner"><h1>'+clean(p.title)+'</h1><p class="headline-overview">'+clean(p.overview)+'</p>'+
+    '<dl class="case-facts"><div><dt>Year</dt><dd>'+clean(p.year)+'</dd></div>'+
+    (p.location?'<div><dt>Location</dt><dd>'+clean(p.location)+'</dd></div>':'')+
+    '<div><dt>Services</dt><dd>'+clean(p.services.join(' / '))+'</dd></div></dl>'+website+'</div>'+
+    (p.cover?'<div class="case-cover">'+cover(p,{lead:true})+'</div>':'')+
+    '<section class="case-story case-inner" aria-label="Project brief">'+
+    '<div><h2>The challenge</h2><p>'+clean(p.challenge)+'</p></div>'+
+    '<div><h2>The approach</h2><p>'+clean(p.approach)+'</p></div></section>'+
+    (media.length?'<section class="media-sequence" aria-label="'+clean(p.title)+' selected visuals">'+gallery+'</section>':'')+
+    (p.outcome?'<section class="story-note case-inner"><h2>Outcome</h2><p>'+clean(p.outcome)+'</p></section>':'')+
+    '<section class="next-wrap" aria-label="Next project"><div class="next-overline"><span>Up next</span><span>'+clean(next.category)+' / '+clean(next.year)+'</span></div>'+
+    '<a class="next-project" href="'+projectUrl(next)+'" aria-label="View next project: '+clean(next.title)+'">'+cover(next)+
+    '<span class="next-title"><strong>'+clean(next.title)+'</strong>'+pixelIcon('right')+'</span><span class="next-progress" aria-hidden="true"></span></a></section></main>';
 const nextEl=root.querySelector('.next-project');
 if(nextEl){
   let frame=0;
@@ -249,33 +255,41 @@ document.querySelector('meta[name="theme-color"]')?.setAttribute('content',theme
 }
 paintTheme();
 document.getElementById('theme-toggle')?.addEventListener('click',()=>{theme=theme==='light'?'dark':'light';try{localStorage.setItem('matt-portfolio-theme',theme)}catch(e){}paintTheme()});
-function openMenu(){
-lastFocus=document.activeElement;
-overlay.classList.add('open');overlay.inert=false;overlay.removeAttribute('aria-hidden');shell.inert=true;document.body.classList.add('locked');
-document.getElementById('menu-trigger').setAttribute('aria-expanded','true');document.getElementById('menu-close').focus({preventScroll:true});
-}
-function closeMenu(){
-if(!overlay.classList.contains('open'))return;
-overlay.classList.remove('open');shell.inert=false;document.body.classList.remove('locked');
-document.getElementById('menu-trigger').setAttribute('aria-expanded','false');lastFocus?.focus({preventScroll:true});
-overlay.inert=true;overlay.setAttribute('aria-hidden','true');
-}
 const menuTrigger=document.getElementById('menu-trigger');
+const siteHeader=document.querySelector('.site-header');
+const backgroundContent=[root,document.querySelector('.site-footer'),document.querySelector('.skip-link')];
+function setMenu(open){
+  if(overlay.classList.contains('open')===open)return;
+  if(!open)menuTrigger.focus({preventScroll:true});
+  overlay.classList.toggle('open',open);
+  overlay.inert=!open;
+  overlay.setAttribute('aria-hidden',String(!open));
+  document.body.classList.toggle('locked',open);
+  for(const part of backgroundContent)part.inert=open;
+  menuTrigger.setAttribute('aria-expanded',String(open));
+  menuTrigger.innerHTML=(open?'CLOSE ':'MENU ')+pixelIcon(open?'close':'menu');
+}
 menuTrigger.hidden=false;
-menuTrigger.addEventListener('click',openMenu);
-document.getElementById('menu-close')?.addEventListener('click',closeMenu);
-window.matchMedia('(min-width: 621px)').addEventListener('change',event=>{if(event.matches)closeMenu()});
-overlay.querySelectorAll('a').forEach(a=>a.addEventListener('click',closeMenu));
-document.addEventListener('keydown',e=>{
-if(!overlay.classList.contains('open'))return;
-if(e.key==='Escape'){e.preventDefault();closeMenu();return}
-if(e.key==='Tab'){
-const focusables=[...overlay.querySelectorAll('button:not([disabled]),a[href]')].filter(x=>x.offsetParent!==null);
-if(!focusables.length)return;
-const first=focusables[0],last=focusables[focusables.length-1];
-if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus()}
-if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus()}
-}});
+menuTrigger.addEventListener('click',()=>setMenu(!overlay.classList.contains('open')));
+window.matchMedia('(min-width: 621px)').addEventListener('change',event=>{if(event.matches)setMenu(false)});
+for(const link of [...siteHeader.querySelectorAll('a'),...overlay.querySelectorAll('a')]){
+  link.addEventListener('click',()=>setMenu(false));
+}
+document.addEventListener('keydown',event=>{
+  if(!overlay.classList.contains('open'))return;
+  if(event.key==='Escape'){
+    event.preventDefault();
+    setMenu(false);
+  }else if(event.key==='Tab'){
+    const focusables=[...siteHeader.querySelectorAll('a[href],button'),...overlay.querySelectorAll('a[href],button')]
+      .filter(element=>element.getClientRects().length);
+    const first=focusables[0],last=focusables.at(-1);
+    if((event.shiftKey&&document.activeElement===first)||(!event.shiftKey&&document.activeElement===last)){
+      event.preventDefault();
+      (event.shiftKey?last:first).focus({preventScroll:true});
+    }
+  }
+});
 const path=location.pathname.replace(/\/index\.html$/,'/').replace(/\/+$/,'')||'/';
 if(path==='/archive')renderArchive();
 else if(path.startsWith('/projects/')){const slug=path.split('/')[2];const p=findProject(slug);if(p)renderCase(p);else {renderArchive();document.title='Project not found — Matthew Exousia®';}}
