@@ -1,0 +1,14 @@
+name: Portfolio motion check
+on: pull_request
+permissions:
+  contents: read
+jobs:
+  browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - run: npm install --prefix "$RUNNER_TEMP/motion" playwright && "$RUNNER_TEMP/motion/node_modules/.bin/playwright" install chromium --with-deps
+      - run: |
+          python3 -m http.server 8080 >/tmp/portfolio-http.log 2>&1 &
+          NODE_PATH="$RUNNER_TEMP/motion/node_modules" node .github/motion-check.cjs
