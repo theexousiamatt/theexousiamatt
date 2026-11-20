@@ -81,7 +81,7 @@ function enhanceMaskedRollovers(){
 function renderHome(){
   const featured=projects.filter(p=>p.featured);
   const filters=categories.map(cat=>'<button type="button" class="filter" aria-pressed="false" aria-label="'+clean(cat)+'" data-filter="'+clean(cat)+'">'+clean(cat)+'</button>').join('');
-  root.innerHTML='<main id="main-content" tabindex="-1"><section class="hero"><h1 class="hero-intro">Web, app &amp; brand</h1></section>'+
+  root.innerHTML='<main id="main-content" tabindex="-1"><section class="hero"><h1 class="hero-intro">A multidisciplinary designer creating distinct brand identities, engaging websites, and thoughtfully designed digital products.</h1></section>'+
     '<section aria-label="Selected projects"><div class="filterbar"><nav class="filters" aria-label="Project categories">'+filters+'</nav><span class="sr-only project-status" role="status"></span></div>'+
     '<div class="work-grid"></div><p class="no-results" hidden>No published projects in this category yet.</p></section></main>';
   const buttons=[...root.querySelectorAll('[data-filter]')];
@@ -104,11 +104,24 @@ function renderHome(){
   root.querySelector('.hero-intro').classList.add('reveal');
 }
 function renderArchive(){
-root.innerHTML='<main id="main-content" tabindex="-1" class="archive-page"><div class="archive-head"><h1>Archive</h1><p>A visual collection of digital products, websites, brand systems and ideas made along the way.</p></div>'+
-'<div class="archive-count"><span>INDEX / SELECTED WORK</span><span>'+String(projects.length).padStart(2,'0')+' PROJECTS</span></div>'+
-'<section class="archive-grid" aria-label="Archive projects">'+projects.map((p,i)=>card(p,'archive',i)).join('')+'</section>'+
-'<div class="archive-bottom"><a href="/">'+pixelIcon('left')+' BACK TO SELECTED WORK</a></div></main>';
-root.querySelector('.archive-head').classList.add('reveal');
+  root.innerHTML='<main id="main-content" tabindex="-1" class="archive-page">'+
+    '<div class="archive-head"><h1>Archive</h1><label class="archive-density"><span>Columns</span>'+
+    '<select aria-label="Archive columns"><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></label></div>'+
+    '<section class="archive-grid" aria-label="Archive projects">'+projects.map((p,i)=>card(p,'archive',i)).join('')+'</section></main>';
+  const grid=root.querySelector('.archive-grid');
+  const density=root.querySelector('select');
+  const narrow=window.matchMedia('(max-width: 620px)');
+  let preferredColumns;
+  function updateDensity(){
+    const max=narrow.matches?2:5;
+    for(const option of density.options)option.hidden=Number(option.value)>max;
+    const columns=Math.min(preferredColumns??(narrow.matches?2:3),max);
+    density.value=String(columns);
+    grid.style.setProperty('--archive-columns',columns);
+  }
+  density.addEventListener('change',()=>{preferredColumns=Number(density.value);updateDensity()});
+  narrow.addEventListener('change',updateDensity);
+  updateDensity();
 }
 function renderCase(p){
 const idx=projects.findIndex(x=>x.slug===p.slug);
