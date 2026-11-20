@@ -162,22 +162,11 @@ function renderHome(){
 function renderArchive(){
   root.innerHTML='<main id="main-content" tabindex="-1" class="archive-page">'+
     '<div class="archive-head"><h1>Archive</h1><label class="archive-density"><span>Columns</span>'+
-    '<select aria-label="Archive columns"><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></label></div>'+
+    '<select aria-label="Archive columns"><option>1</option><option>2</option><option selected>3</option><option>4</option><option>5</option></select></label></div>'+
     '<section class="archive-grid" aria-label="Archive projects">'+projects.map((p,i)=>card(p,'archive',i)).join('')+'</section></main>';
   const grid=root.querySelector('.archive-grid');
   const density=root.querySelector('select');
-  const narrow=window.matchMedia('(max-width: 620px)');
-  let preferredColumns;
-  function updateDensity(){
-    const max=narrow.matches?2:5;
-    for(const option of density.options)option.hidden=Number(option.value)>max;
-    const columns=Math.min(preferredColumns??(narrow.matches?2:3),max);
-    density.value=String(columns);
-    grid.style.setProperty('--archive-columns',columns);
-  }
-  density.addEventListener('change',()=>{preferredColumns=Number(density.value);updateDensity()});
-  narrow.addEventListener('change',updateDensity);
-  updateDensity();
+  density.addEventListener('change',()=>grid.style.setProperty('--archive-columns',density.value));
 }
 function renderCase(p){
   const next=projects[(projects.indexOf(p)+1)%projects.length];

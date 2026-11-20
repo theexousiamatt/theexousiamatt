@@ -309,7 +309,8 @@ body:has(.hero) .site-footer{margin-top:clamp(46px,6vw,88px)}
 .archive-grid{columns:var(--archive-columns,3);column-gap:8px}
 @media (max-width:620px){
   .archive-page{margin-inline:-8px;padding-top:40px}
-  .archive-grid{columns:var(--archive-columns,2)}
+  .archive-density{display:none}
+  .archive-grid{columns:1}
 }
 
 /* Case studies share the same editorial rhythm, from the introduction to the next project. */
