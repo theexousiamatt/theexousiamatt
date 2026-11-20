@@ -285,8 +285,9 @@ body:has(.hero) .site-footer{margin-top:clamp(46px,6vw,88px)}
   .hero-intro{max-width:280px}
   .filter{font-size:clamp(16px,4.9vw,20px)}
 
-  .work-grid{grid-template-columns:1fr}
+  .work-grid{grid-template-columns:1fr;row-gap:16px}
   .tile-media{aspect-ratio:4/3}
+  .tile-label{padding:8px 0 0}
 
   .archive-info{flex-wrap:wrap}
   .archive-info span{text-align:left}
