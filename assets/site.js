@@ -295,3 +295,34 @@ else if(path.startsWith('/projects/')){const slug=path.split('/')[2];const p=fin
 else renderHome();
 enhanceMaskedRollovers();
 })();
+
+for (const link of document.querySelectorAll('.header-mail, .overlay-main a[href^="mailto:"]')) {
+  const group=document.createElement('span');
+  if(link.matches('.header-mail')) {
+    group.className='header-mail';
+    link.classList.remove('header-mail');
+  }
+  group.style.whiteSpace='nowrap';
+  link.before(group);
+  group.append(link);
+  const button=document.createElement('button');
+  button.type='button';
+  button.ariaLabel='Copy email address';
+  button.title='Copy email address';
+  button.style.cssText='background:transparent;padding:5px;margin-left:4px;vertical-align:middle;color:inherit';
+  button.innerHTML='<svg aria-hidden="true" width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path fill-rule="evenodd" d="M1 1h10v3H9V3H3v7h1v2H1zM5 5h10v10H5zm2 2v6h6V7z"/></svg>';
+  const status=document.createElement('span');
+  status.className='sr-only';status.setAttribute('role','status');
+  group.append(button,status);
+  const icon=button.innerHTML;
+  let timer;
+  button.onclick=async()=>{
+    try {
+      await navigator.clipboard.writeText(link.href.slice(7));
+      status.textContent='Email address copied';
+      button.textContent='✓';
+      clearTimeout(timer);
+      timer=setTimeout(()=>{button.innerHTML=icon;status.textContent=''},1500);
+    } catch {window.prompt('Copy email address',link.href.slice(7))}
+  };
+}
