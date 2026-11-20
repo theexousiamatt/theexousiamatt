@@ -17,7 +17,8 @@ window.PORTFOLIO_PROJECTS = [
     ],
     "location": "Lagos, Nigeria",
     "featured": true,
-    "cover": "/media/eatly-hero.webp",
+    "cover": "/media/eatly-app.webp",
+    "coverAlt": "Eatly food delivery mobile product, photographed in hand against a red backdrop",
     "coverPosition": "center",
     "overview": "An evolving digital experience for Eatly, spanning ordering, delivery, vendor journeys and the brand moments around them.",
     "challenge": "Food delivery involves different journeys for customers, vendors and riders. Each experience needs to feel coherent without asking every user to navigate the same interface.",
@@ -83,6 +84,7 @@ window.PORTFOLIO_PROJECTS = [
     "location": "Botswana",
     "featured": true,
     "cover": "/media/botswana.webp",
+    "coverAlt": "Botswana Tech Fund website displayed on a laptop in natural light",
     "overview": "A digital home for Botswana Tech Fund, designed to present its investment focus, team and portfolio in a clear, accessible experience.",
     "challenge": "An investment platform needs to give founders and partners a reliable way to understand who it supports and where to find essential information.",
     "approach": "The website organizes fund information into a navigable hierarchy for portfolio, team, impact, news and frequently asked questions.",
@@ -114,6 +116,11 @@ window.PORTFOLIO_PROJECTS = [
     "outcome": "An evolving collaboration product being rebranded from Ordo to Jerin. The work shown is an earlier Ordo workspace exploration and is not presented as final Jerin UI.",
     "gallery": [
       {
+        "src": "/media/jerin-identity.svg",
+        "caption": "Jerin — current brand identity direction, from the design file",
+        "ratio": "landscape"
+      },
+      {
         "src": "/media/jerin-early-ux.png",
         "caption": "Early product interface study, created under the previous Ordo name",
         "ratio": "portrait"
@@ -138,13 +145,20 @@ window.PORTFOLIO_PROJECTS = [
     ],
     "location": "Lagos, Nigeria",
     "featured": true,
-    "cover": "/media/tiana-hero.png",
+    "cover": "/media/tiana-editorial.svg",
+    "ogCover": "/media/tiana-hero.png",
+    "coverAlt": "Tiana Gift Shop ivory branded gift bag against an oxblood backdrop",
     "art": "tiana",
     "overview": "A considered gift-shop identity built around presentation, detail and the feeling of receiving something thoughtful.",
     "challenge": "The visual identity needed to express warmth and quality across packaging, printed elements and gift moments.",
     "approach": "The system pairs an oxblood-led palette with soft champagne tones and deliberate applications across the packaging experience.",
     "outcome": "The identity system includes distinct oxblood, ivory and champagne applications, with print and packaging artwork designed for gift-led experiences.",
     "gallery": [
+      {
+        "src": "/media/tiana-editorial.svg",
+        "caption": "The branded gift bag — identity and packaging direction",
+        "ratio": "landscape"
+      },
       {
         "src": "/media/tiana-bag-shot.png",
         "caption": "Branded gift bag — packaging presentation",
