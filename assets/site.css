@@ -243,10 +243,10 @@ header.site-header a,header.site-header button,.site-footer a{font-weight:400}
 .tile-name{display:block;font-size:clamp(15px,1.55vw,22px);font-weight:500;letter-spacing:-.045em}
 .tile-type{display:block;flex:none;text-align:right;margin-left:auto;font:11px/1.4 var(--mono);color:var(--muted);text-transform:uppercase}
 @media (hover:hover) and (min-width:621px){
-  .project-tile{position:relative}
+  .project-tile{position:relative;--tag-ease:linear(0,.191 6.4%,.353 12.8%,.483 19.2%,.589 25.6%,.675 32%,.747 38.4%,.805 44.8%,.853 51.2%,.893 57.6%,.924 64%,.949 70.4%,.968 76.8%,.983 83.2%,.993 89.6%,1)}
   .project-tile .cover{transition:filter 320ms ease}
-  .project-tile .tile-label{position:absolute;inset:16px auto auto 16px;max-width:calc(100% - 32px);padding:7px 10px;border:1px solid #ffffff29;border-radius:3px;background:#141414b8;color:#fff;pointer-events:none;opacity:0;transform:translateY(12px);transition:opacity 220ms ease,transform 320ms cubic-bezier(.22,1,.36,1)}
-  .project-tile .tile-name{font-size:14px;line-height:1.4;letter-spacing:-.02em}
+  .project-tile .tile-label{position:absolute;inset:16px auto auto 16px;max-width:calc(100% - 32px);padding:8px 12px;border:0;border-radius:2px;background:rgba(255,255,255,.15);backdrop-filter:blur(1px);color:rgba(255,255,255,.88);pointer-events:none;opacity:0;transform:translateY(16px);transition:opacity 520ms var(--tag-ease),transform 520ms var(--tag-ease)}
+  .project-tile .tile-name{font-size:15px;font-weight:400;line-height:1.4;letter-spacing:-.04em}
   .project-tile .tile-type{display:none}
   .project-tile:is(:hover,:focus-visible) .cover{filter:brightness(.9)}
   .project-tile:is(:hover,:focus-visible) .tile-label{opacity:1;transform:none}

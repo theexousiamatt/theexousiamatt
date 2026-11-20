@@ -262,7 +262,17 @@ menuTrigger.hidden=false;
 menuTrigger.addEventListener('click',()=>setMenu(!overlay.classList.contains('open')));
 window.matchMedia('(min-width: 621px)').addEventListener('change',event=>{if(event.matches)setMenu(false)});
 for(const link of [...siteHeader.querySelectorAll('a'),...overlay.querySelectorAll('a')]){
-  link.addEventListener('click',()=>setMenu(false));
+  link.addEventListener('click',event=>{
+    if(!overlay.classList.contains('open'))return;
+    const internal=link.origin===location.origin && !link.target && !event.metaKey &&
+      !event.ctrlKey && !event.shiftKey && !event.altKey && event.button===0;
+    setMenu(false);
+    if(!internal || motionPreference.matches)return;
+    event.preventDefault();
+    const fade=overlay.getAnimations().find(animation=>animation.transitionProperty==='opacity');
+    if(!fade){location.assign(link.href);return}
+    fade.finished.then(()=>location.assign(link.href),()=>{});
+  });
 }
 document.addEventListener('keydown',event=>{
   if(!overlay.classList.contains('open'))return;
