@@ -12,6 +12,21 @@ const clean=(str)=>String(str??'').replace(/[&<>"']/g,s=>({'&':'&amp;','<':'&lt;
 const projectUrl=p=>'/projects/'+encodeURIComponent(p.slug)+'/';
 const findProject=slug=>projects.find(p=>p.slug===slug);
 const img=(path,alt,extra='')=>'<img src="'+clean(path)+'" alt="'+clean(alt)+'" '+extra+'>';
+// Reuse the 24-unit pixel grid from the mattt.wtf work gallery.
+const leftArrow='<path d="M3 11h17v2H3zM5 9h2v2H5zM7 7h2v2H7zM9 5h2v2H9zM5 13h2v2H5zM7 15h2v2H7zM9 17h2v2H9z"/>';
+const pixelIcons={
+  left:leftArrow,
+  right:'<g transform="translate(24 0) scale(-1 1)">'+leftArrow+'</g>',
+  close:'<path d="M5 5h3v3H5zM8 8h3v3H8zM11 11h2v2h-2zM13 8h3v3h-3zM16 5h3v3h-3zM8 13h3v3H8zM5 16h3v3H5zM13 13h3v3h-3zM16 16h3v3h-3z"/>',
+  external:'<path d="M10 5h9v2h-9zM17 7h2v7h-2zM15 7h2v2h-2zM13 9h2v2h-2zM11 11h2v2h-2zM9 13h2v2H9zM7 15h2v2H7zM5 17h2v2H5z"/>',
+  menu:'<path d="M4 7h16v2H4zM4 11h16v2H4zM4 15h16v2H4z"/>',
+  moon:'<path d="M10 4h6v2h-4v2h-2v8h2v2h6v-2h2v4h-4v2H8v-2H6v-2H4V8h2V6h4zm-2 4H6v8h2v2h2v-2H8z"/>',
+  sun:'<path d="M10 7h4v2h3v6h-3v2h-4v-2H7V9h3zm0 3v4h4v-4zM11 2h2v3h-2zM11 19h2v3h-2zM2 11h3v2H2zM19 11h3v2h-3zM5 5h2v2H5zM17 5h2v2h-2zM5 17h2v2H5zM17 17h2v2h-2z" fill-rule="evenodd"/>'
+};
+function pixelIcon(name){
+  return '<svg class="pixel-icon" data-pixel-icon="'+name+'" viewBox="0 0 24 24" shape-rendering="crispEdges" fill="currentColor" aria-hidden="true" focusable="false">'+pixelIcons[name]+'</svg>';
+}
+document.querySelectorAll('[data-icon]').forEach(node=>{node.innerHTML=pixelIcon(node.dataset.icon)});
 function cover(p,opts={}){
   if(p.cover){
     const loading=opts.lead?'data-first="true" fetchpriority="high"':'loading="lazy" decoding="async"';
@@ -41,8 +56,8 @@ function cover(p,opts={}){
 function card(p,kind='work',i=0){
   const cls=kind==='archive'?'archive-tile':'project-tile';
   return '<a class="'+cls+'" href="'+projectUrl(p)+'" aria-label="Explore '+clean(p.title)+' case study">'+(kind==='archive'?cover(p,{lead:i===0}):'<div class="tile-media">'+cover(p,{lead:i===0})+'</div>')+
-     (kind==='archive'?'<span class="archive-info"><strong>'+clean(p.title)+'</strong><span>'+clean(p.category)+' ↗</span></span>'
-     :'<span class="tile-label"><span><strong class="tile-name">'+clean(p.title)+'</strong><small class="tile-type">'+clean(p.category)+' · '+clean(p.year)+'</small></span><span class="tile-arrow" aria-hidden="true">↗</span></span>')+
+     (kind==='archive'?'<span class="archive-info"><strong>'+clean(p.title)+'</strong><span>'+clean(p.category)+' '+pixelIcon('external')+'</span></span>'
+     :'<span class="tile-label"><span><strong class="tile-name">'+clean(p.title)+'</strong><small class="tile-type">'+clean(p.category)+' · '+clean(p.year)+'</small></span>'+pixelIcon('external')+'</span>')+
      '</a>';
 }
 function enhanceMaskedRollovers(){
@@ -65,12 +80,12 @@ function enhanceMaskedRollovers(){
 }
 function renderHome(){
   const featured=projects.filter(p=>p.featured);
-  const filters=categories.map(cat=>'<button type="button" class="filter" aria-pressed="false" data-filter="'+clean(cat)+'">'+clean(cat)+'</button>').join('');
-  root.innerHTML='<main id="main-content" tabindex="-1"><section class="hero"><h1 class="hero-intro">Product designer and design engineer based in Lagos.</h1></section>'+
-    '<section aria-label="Selected projects"><div class="filterbar"><nav class="filters" aria-label="Project categories">'+filters+'</nav><span class="count" role="status"></span></div>'+
+  const filters=categories.map(cat=>'<button type="button" class="filter" aria-pressed="false" aria-label="'+clean(cat)+'" data-filter="'+clean(cat)+'">'+clean(cat)+'</button>').join('');
+  root.innerHTML='<main id="main-content" tabindex="-1"><section class="hero"><h1 class="hero-intro">Web, app &amp; brand</h1></section>'+
+    '<section aria-label="Selected projects"><div class="filterbar"><nav class="filters" aria-label="Project categories">'+filters+'</nav><span class="sr-only project-status" role="status"></span></div>'+
     '<div class="work-grid"></div><p class="no-results" hidden>No published projects in this category yet.</p></section></main>';
   const buttons=[...root.querySelectorAll('[data-filter]')];
-  const count=root.querySelector('.count');
+  const count=root.querySelector('.project-status');
   const grid=root.querySelector('.work-grid');
   const empty=root.querySelector('.no-results');
   function select(category){
@@ -92,7 +107,7 @@ function renderArchive(){
 root.innerHTML='<main id="main-content" tabindex="-1" class="archive-page"><div class="archive-head"><h1>Archive</h1><p>A visual collection of digital products, websites, brand systems and ideas made along the way.</p></div>'+
 '<div class="archive-count"><span>INDEX / SELECTED WORK</span><span>'+String(projects.length).padStart(2,'0')+' PROJECTS</span></div>'+
 '<section class="archive-grid" aria-label="Archive projects">'+projects.map((p,i)=>card(p,'archive',i)).join('')+'</section>'+
-'<div class="archive-bottom"><a href="/">← BACK TO SELECTED WORK</a></div></main>';
+'<div class="archive-bottom"><a href="/">'+pixelIcon('left')+' BACK TO SELECTED WORK</a></div></main>';
 root.querySelector('.archive-head').classList.add('reveal');
 }
 function renderCase(p){
@@ -104,14 +119,14 @@ const gallery=media.map((g,i)=>'<figure class="media-frame '+clean(g.ratio==='la
 root.innerHTML='<main id="main-content" tabindex="-1" class="case-page"><div class="case-cover">'+lead+'</div>'+
 '<section class="case-heading"><h1>'+clean(p.title)+'</h1><p class="headline-overview">'+clean(p.overview)+'</p></section>'+
 '<section class="case-facts" aria-label="Project facts"><div><span class="mini-label">DATE</span><p>'+clean(p.year)+'</p></div>'+
-'<div><span class="mini-label">LOCATION</span><p>'+clean(p.location||'Nigeria')+'</p></div>'+
+(p.location?'<div><span class="mini-label">LOCATION</span><p>'+clean(p.location)+'</p></div>':'')+
 '<div><span class="mini-label">SERVICES</span><p>'+p.services.map(x=>'<span>'+clean(x)+'</span>').join('')+'</p>'+
-(p.url?'<p style="margin-top:18px"><a href="'+clean(p.url)+'" target="_blank" rel="noopener noreferrer">VISIT WEBSITE ↗</a></p>':'')+'</div></section>'+
+(p.url?'<p style="margin-top:18px"><a href="'+clean(p.url)+'" target="_blank" rel="noopener noreferrer">VISIT WEBSITE '+pixelIcon('external')+'</a></p>':'')+'</div></section>'+
 '<section class="case-story"><h2>THE BRIEF</h2><div class="story-copy"><h3>'+clean(p.overview)+'</h3><div class="story-columns"><div><h4>THE CHALLENGE</h4><p>'+clean(p.challenge)+'</p></div><div><h4>OUR APPROACH</h4><p>'+clean(p.approach)+'</p></div></div></div></section>'+
-(media.length?'<section class="media-sequence" aria-label="'+clean(p.title)+' selected visuals">'+gallery+'</section>':p.url?'<section class="case-live"><p>EXPLORE THE PROJECT</p><a href="'+clean(p.url)+'" target="_blank" rel="noopener noreferrer">VIEW LIVE EXPERIENCE <span aria-hidden="true">↗</span></a></section>':'')+
+(media.length?'<section class="media-sequence" aria-label="'+clean(p.title)+' selected visuals">'+gallery+'</section>':p.url?'<section class="case-live"><p>EXPLORE THE PROJECT</p><a href="'+clean(p.url)+'" target="_blank" rel="noopener noreferrer">VIEW LIVE EXPERIENCE '+pixelIcon('external')+'</a></section>':'')+
 '<section class="story-note"><h2>THE WORK</h2><div class="note-copy"><strong>Made to move the work forward.</strong><p>'+clean(p.outcome)+'</p></div></section>'+
 '<section class="next-wrap" aria-label="Next project"><div class="next-overline"><span>UP NEXT</span><span>'+clean(next.category)+' / '+clean(next.year)+'</span></div>'+
-'<a class="next-project" href="'+projectUrl(next)+'" aria-label="View next project: '+clean(next.title)+'">'+cover(next)+'<span class="next-title"><strong>'+clean(next.title)+'</strong><span>↗</span></span><span class="next-progress" aria-hidden="true"></span></a></section></main>';
+'<a class="next-project" href="'+projectUrl(next)+'" aria-label="View next project: '+clean(next.title)+'">'+cover(next)+'<span class="next-title"><strong>'+clean(next.title)+'</strong>'+pixelIcon('right')+'</span><span class="next-progress" aria-hidden="true"></span></a></section></main>';
 const nextEl=root.querySelector('.next-project');
 if(nextEl){
   let frame=0;
@@ -131,14 +146,10 @@ if(nextEl){
   schedule();
 }
 }
-const themeGlyphs={
-  dark:'<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke-width="1.6" stroke-linecap="round"><path d="M20.2 16.4A8.7 8.7 0 0 1 7.6 3.8a8.8 8.8 0 1 0 12.6 12.6Z"/></svg>',
-  light:'<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke-width="1.6" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2m10-10h-2M4 12H2m17-7-1.5 1.5M6.5 17.5 5 19m14 0-1.5-1.5M6.5 6.5 5 5"/></svg>'
-};
-const lagosTime=new Intl.DateTimeFormat('en-US',{hour:'numeric',minute:'2-digit',second:'2-digit',hour12:true,timeZone:'Africa/Lagos'});
+const localTime=new Intl.DateTimeFormat('en-US',{hour:'numeric',minute:'2-digit',second:'2-digit',hour12:true});
 function formatClock(){
 const node=document.getElementById('clock');if(!node)return;
-node.textContent=lagosTime.format(new Date()).toLowerCase();
+node.textContent=localTime.format(new Date()).toLowerCase();
 }
 const clockNode=document.getElementById('clock');
 if(clockNode){
@@ -149,7 +160,7 @@ if(clockNode){
   themeControl.type='button';
   themeControl.id='header-theme-toggle';
   themeControl.className='header-theme-toggle';
-  themeControl.innerHTML=themeGlyphs.dark;
+  themeControl.innerHTML=pixelIcon('moon');
   themeControl.setAttribute('aria-label','Switch between dark and light mode');
   themeControl.addEventListener('click',()=>document.getElementById('theme-toggle')?.click());
   wrapper.appendChild(themeControl);
@@ -162,8 +173,8 @@ let theme=stored==='light'?'light':'dark';
 function paintTheme(){
 document.documentElement.dataset.theme=theme;
 const label=document.getElementById('theme-value');if(label)label.textContent=theme;
-const icon=document.getElementById('header-theme-toggle');if(icon){icon.innerHTML=themeGlyphs[theme];icon.setAttribute('aria-label','Switch to '+(theme==='light'?'dark':'light')+' mode');}
-document.querySelector('meta[name="theme-color"]')?.setAttribute('content',theme==='light'?'#f1f1ed':'#0f0f0f');
+const icon=document.getElementById('header-theme-toggle');if(icon){icon.innerHTML=pixelIcon(theme==='light'?'sun':'moon');icon.setAttribute('aria-label','Switch to '+(theme==='light'?'dark':'light')+' mode');}
+document.querySelector('meta[name="theme-color"]')?.setAttribute('content',theme==='light'?'#ffffff':'#0f0f0f');
 }
 paintTheme();
 document.getElementById('theme-toggle')?.addEventListener('click',()=>{theme=theme==='light'?'dark':'light';try{localStorage.setItem('matt-portfolio-theme',theme)}catch(e){}paintTheme()});
@@ -182,6 +193,7 @@ const menuTrigger=document.getElementById('menu-trigger');
 menuTrigger.hidden=false;
 menuTrigger.addEventListener('click',openMenu);
 document.getElementById('menu-close')?.addEventListener('click',closeMenu);
+window.matchMedia('(min-width: 621px)').addEventListener('change',event=>{if(event.matches)closeMenu()});
 overlay.querySelectorAll('a').forEach(a=>a.addEventListener('click',closeMenu));
 document.addEventListener('keydown',e=>{
 if(!overlay.classList.contains('open'))return;

@@ -15,7 +15,6 @@ window.PORTFOLIO_PROJECTS = [
       "Web experience",
       "Digital campaigns"
     ],
-    "location": "Lagos, Nigeria",
     "featured": true,
     "cover": "/media/eatly-app.webp",
     "coverAlt": "Eatly food delivery mobile product, photographed in hand against a red backdrop",
@@ -106,7 +105,6 @@ window.PORTFOLIO_PROJECTS = [
       "Product design",
       "Design engineering"
     ],
-    "location": "Lagos, Nigeria",
     "featured": true,
     "cover": "/media/jerin-early-ux.png",
     "art": "jerin",
@@ -143,7 +141,6 @@ window.PORTFOLIO_PROJECTS = [
       "Packaging direction",
       "Art direction"
     ],
-    "location": "Lagos, Nigeria",
     "featured": true,
     "cover": "/media/tiana-editorial.svg",
     "ogCover": "/media/tiana-hero.png",
@@ -196,7 +193,6 @@ window.PORTFOLIO_PROJECTS = [
       "Front-end development",
       "Interaction design"
     ],
-    "location": "Lagos, Nigeria",
     "featured": true,
     "cover": "/media/ivy-figma-portrait.png",
     "art": "ivy",
@@ -227,7 +223,6 @@ window.PORTFOLIO_PROJECTS = [
       "Creative tooling",
       "Interaction design"
     ],
-    "location": "Lagos, Nigeria",
     "featured": true,
     "cover": "/media/lora-symbol.svg",
     "art": "lora",
@@ -284,7 +279,6 @@ window.PORTFOLIO_PROJECTS = [
       "Brand systems",
       "Web experience"
     ],
-    "location": "Lagos, Nigeria",
     "featured": false,
     "cover": null,
     "art": "inspirare",
@@ -308,7 +302,6 @@ window.PORTFOLIO_PROJECTS = [
       "Front-end development",
       "Motion"
     ],
-    "location": "Lagos, Nigeria",
     "featured": false,
     "cover": null,
     "art": "marcel",
