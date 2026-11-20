@@ -4,7 +4,7 @@
 *{box-sizing:border-box}
 html{scroll-behavior:smooth;scroll-padding-top:56px}
 body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--font);font-size:13px;font-weight:500;-webkit-font-smoothing:antialiased;transition:background .35s,color .35s}
-body.locked{overflow:hidden}
+html:has(body.locked){overflow:hidden;overscroll-behavior:none}
 button,a{font:inherit;color:inherit}
 button{border:0;cursor:pointer}
 a{text-decoration:none}

@@ -6,6 +6,64 @@ const root=document.getElementById('app');
 const shell=document.getElementById('shell');
 const overlay=document.getElementById('navigation');
 const motionPreference=window.matchMedia('(prefers-reduced-motion: reduce)');
+// Ease wheel input while keeping the document's native scroll position.
+function enableSmoothWheel(){
+  const documentScroller=document.scrollingElement;
+  let frame=0, target=0, position=0, lastScroll=0, lastTime=0;
+  const maxScroll=()=>Math.max(0,documentScroller.scrollHeight-documentScroller.clientHeight);
+  const clamp=value=>Math.min(maxScroll(),Math.max(0,value));
+  function stop(){
+    cancelAnimationFrame(frame);
+    frame=0;
+  }
+  function step(now){
+    if(motionPreference.matches||document.body.classList.contains('locked')||Math.abs(window.scrollY-lastScroll)>1){
+      stop();
+      return;
+    }
+    target=clamp(target);
+    const elapsed=lastTime?Math.min(now-lastTime,48):1000/60;
+    lastTime=now;
+    position+=(target-position)*(1-Math.exp(-elapsed/320));
+    const settled=Math.abs(position-target)<0.75;
+    window.scrollTo({top:settled?target:position,behavior:'instant'});
+    lastScroll=window.scrollY;
+    frame=settled?0:requestAnimationFrame(step);
+  }
+  function usesNativeScroll(event){
+    for(const node of event.composedPath()){
+      if(node===document.body||node===documentScroller)break;
+      if(!(node instanceof Element))continue;
+      if(node.matches('select,input[type="range"],input[type="number"]'))return true;
+      if(node.scrollHeight>node.clientHeight+1&&/^(auto|scroll)$/.test(getComputedStyle(node).overflowY))return true;
+    }
+    return false;
+  }
+  window.addEventListener('wheel',event=>{
+    if(event.defaultPrevented||!event.cancelable||motionPreference.matches||document.body.classList.contains('locked')||
+      event.ctrlKey||event.metaKey||event.shiftKey||event.altKey||Math.abs(event.deltaX)>=Math.abs(event.deltaY)||usesNativeScroll(event)){
+      stop();
+      return;
+    }
+    const current=window.scrollY;
+    if(!frame||Math.abs(current-lastScroll)>1){
+      stop();
+      position=target=lastScroll=current;
+      lastTime=0;
+    }
+    const unit=event.deltaMode===1?32:event.deltaMode===2?documentScroller.clientHeight:1;
+    const delta=event.deltaY*unit;
+    // Drop residual momentum when the user reverses direction.
+    if((target-position)*delta<0)target=position;
+    target=clamp(target+delta);
+    event.preventDefault();
+    if(!frame&&Math.abs(target-current)>=0.5)frame=requestAnimationFrame(step);
+  },{passive:false});
+  window.addEventListener('scroll',()=>{if(frame&&Math.abs(window.scrollY-lastScroll)>1)stop()},{passive:true});
+  for(const event of ['pointerdown','touchstart','keydown','pagehide'])window.addEventListener(event,stop,{passive:true});
+  motionPreference.addEventListener('change',stop);
+}
+enableSmoothWheel();
 const categories=['All','Digital','Branding','Web','Art Direction'];
 let lastFocus=null;
 const clean=(str)=>String(str??'').replace(/[&<>"']/g,s=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;','\'':'&#39;'}[s]));
@@ -194,12 +252,12 @@ document.getElementById('theme-toggle')?.addEventListener('click',()=>{theme=the
 function openMenu(){
 lastFocus=document.activeElement;
 overlay.classList.add('open');overlay.inert=false;overlay.removeAttribute('aria-hidden');shell.inert=true;document.body.classList.add('locked');
-document.getElementById('menu-trigger').setAttribute('aria-expanded','true');document.getElementById('menu-close').focus();
+document.getElementById('menu-trigger').setAttribute('aria-expanded','true');document.getElementById('menu-close').focus({preventScroll:true});
 }
 function closeMenu(){
 if(!overlay.classList.contains('open'))return;
 overlay.classList.remove('open');shell.inert=false;document.body.classList.remove('locked');
-document.getElementById('menu-trigger').setAttribute('aria-expanded','false');lastFocus?.focus();
+document.getElementById('menu-trigger').setAttribute('aria-expanded','false');lastFocus?.focus({preventScroll:true});
 overlay.inert=true;overlay.setAttribute('aria-hidden','true');
 }
 const menuTrigger=document.getElementById('menu-trigger');
