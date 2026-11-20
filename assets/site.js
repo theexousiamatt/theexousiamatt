@@ -113,7 +113,7 @@ function card(p,kind='work',i=0){
   const cls=kind==='archive'?'archive-tile':'project-tile';
   return '<a class="'+cls+'" href="'+projectUrl(p)+'" aria-label="Explore '+clean(p.title)+' case study">'+(kind==='archive'?cover(p,{lead:i===0}):'<div class="tile-media">'+cover(p,{lead:i===0})+'</div>')+
      (kind==='archive'?'<span class="archive-info"><strong>'+clean(p.title)+'</strong><span>'+clean(p.category)+' '+pixelIcon('external')+'</span></span>'
-     :'<span class="tile-label"><span><strong class="tile-name">'+clean(p.title)+'</strong><small class="tile-type">'+clean(p.category)+' · '+clean(p.year)+'</small></span>'+pixelIcon('external')+'</span>')+
+     :'<span class="tile-label"><strong class="tile-name">'+clean(p.title)+'</strong><small class="tile-type">'+clean(p.category)+' '+clean(p.year)+'</small></span>')+
      '</a>';
 }
 function enhanceMaskedRollovers(){
