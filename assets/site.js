@@ -304,23 +304,24 @@ for (const link of document.querySelectorAll('.header-mail, .overlay-main a[href
   }
   group.style.whiteSpace='nowrap';
   link.before(group);
-  group.append(link);
+  const row=document.createElement('span');
+  row.className='email-copy-row';group.append(row);row.append(link);
   const button=document.createElement('button');
   button.type='button';
   button.ariaLabel='Copy email address';
   button.title='Copy email address';
-  button.style.cssText='background:transparent;padding:5px;margin-left:4px;vertical-align:middle;color:inherit';
-  button.innerHTML='<svg aria-hidden="true" width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path fill-rule="evenodd" d="M1 1h10v3H9V3H3v7h1v2H1zM5 5h10v10H5zm2 2v6h6V7z"/></svg>';
+  button.className='copy-email';
+  button.innerHTML='<svg aria-hidden="true" viewBox="0 0 12 12" fill="currentColor"><path d="M1 1h6v1H2v6H1z"/><path class="front-sheet" fill-rule="evenodd" d="M4 3h4v1h1v1h1v6H4zm1 1v6h4V6H7V4z"/></svg>';
   const status=document.createElement('span');
   status.className='sr-only';status.setAttribute('role','status');
-  group.append(button,status);
+  row.append(button,status);
   const icon=button.innerHTML;
   let timer;
   button.onclick=async()=>{
     try {
       await navigator.clipboard.writeText(link.href.slice(7));
       status.textContent='Email address copied';
-      button.textContent='✓';
+      button.innerHTML='<svg aria-hidden="true" viewBox="0 0 12 12" fill="currentColor"><path d="M1 6h2v2h2V6h2V4h2V2h2v3H9v2H7v2H5v2H3V9H1z"/></svg>';
       clearTimeout(timer);
       timer=setTimeout(()=>{button.innerHTML=icon;status.textContent=''},1500);
     } catch {window.prompt('Copy email address',link.href.slice(7))}
