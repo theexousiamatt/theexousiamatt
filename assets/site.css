@@ -356,11 +356,11 @@ body:has(.hero) .site-footer{margin-top:clamp(46px,6vw,88px)}
 
 /* Keep a single wordmark in the pinned header while the mobile panel moves. */
 :root{--mobile-header-height:48px}
-.nav-overlay{position:fixed;inset:var(--mobile-header-height) 0 0;z-index:9;display:flex;flex-direction:column;overflow:auto;overscroll-behavior:contain;padding:clamp(28px,8vh,72px) 16px 24px;background:var(--bg);visibility:hidden;pointer-events:none;opacity:0;transform:translateY(-8px);transition:opacity 300ms ease,transform 340ms cubic-bezier(.22,1,.36,1),visibility 0s linear 340ms}
+.nav-overlay{position:fixed;inset:var(--mobile-header-height) 0 0;z-index:9;display:flex;flex-direction:column;overflow:auto;overscroll-behavior:contain;padding:clamp(24px,5vh,48px) 16px 24px;background:var(--bg);visibility:hidden;pointer-events:none;opacity:0;transform:translateY(-8px);transition:opacity 300ms ease,transform 340ms cubic-bezier(.22,1,.36,1),visibility 0s linear 340ms}
 .nav-overlay.open{visibility:visible;pointer-events:auto;opacity:1;transform:none;transition-delay:0s}
-.overlay-main{display:grid;gap:clamp(4px,1.6vh,12px);margin:auto 0}
-.overlay-main a{justify-self:start;font-size:clamp(38px,10vw,68px);font-weight:500;line-height:1.05;letter-spacing:-.075em;opacity:0;transform:translateY(-10px);transition:opacity 170ms ease,transform 260ms cubic-bezier(.22,1,.36,1)}
-.nav-overlay.open .overlay-main a{opacity:1;transform:none;transition-duration:270ms,350ms;transition-delay:var(--menu-delay,50ms)}
+.overlay-main{display:grid;gap:clamp(8px,1.5vh,14px);margin:0 0 auto}
+.overlay-main a{justify-self:start;font-size:clamp(44px,13vw,76px);font-weight:500;line-height:1.05;letter-spacing:-.075em;opacity:0;transform:translateY(14px);transition:opacity 165ms ease-in,transform 210ms ease-in;transition-delay:calc(140ms - var(--menu-delay,50ms))}
+.nav-overlay.open .overlay-main a{opacity:1;transform:none;transition-duration:330ms,470ms;transition-delay:var(--menu-delay,50ms)}
 .overlay-main a:nth-child(2){--menu-delay:80ms}
 .overlay-main a:nth-child(3){--menu-delay:110ms}
 .overlay-main a:nth-child(4){--menu-delay:140ms}
@@ -378,4 +378,15 @@ body:has(.hero) .site-footer{margin-top:clamp(46px,6vw,88px)}
 }
 @media(prefers-reduced-motion:reduce){
   .nav-overlay,.overlay-main a,.overlay-bottom{transform:none;transition:none!important}
+}
+
+@keyframes page-arrive {
+  from { opacity: 0; transform: translateY(9px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@media (prefers-reduced-motion: no-preference) {
+  #app main:not(.fallback-content) > *, .error-content {
+    animation: page-arrive 380ms cubic-bezier(.22,.75,.25,1) backwards;
+  }
+  #app main:not(.fallback-content) > :nth-child(n+2) { animation-delay: 45ms; }
 }

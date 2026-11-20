@@ -157,7 +157,7 @@ function renderHome(){
   }
   for(const button of buttons)button.addEventListener('click',()=>select(button.dataset.filter));
   select('All');
-  root.querySelector('.hero-intro').classList.add('reveal');
+
 }
 function renderArchive(){
   root.innerHTML='<main id="main-content" tabindex="-1" class="archive-page">'+
