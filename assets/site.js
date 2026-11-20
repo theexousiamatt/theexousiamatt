@@ -30,7 +30,7 @@ function cover(p,opts={}){
         '<span class="jerin-footnote">EARLIER PRODUCT DESIGN STUDY · ORDO</span></div>';
     }
     const mode=p.slug==='botswana-tech-fund'?'website':'photo';
-    return '<div class="cover cover-'+clean(p.slug)+'" data-cover="'+mode+'">'+img(p.cover,p.title+' project image',loading)+'</div>';
+    return '<div class="cover cover-'+clean(p.slug)+'" data-cover="'+mode+'">'+img(p.cover,p.coverAlt||p.title+' project image',loading)+'</div>';
   }
   return '<div class="cover cover-'+clean(p.art||p.slug)+'">'+
    '<span class="cover-kicker"><span>MATTHEW EXOUSIA®</span><span>'+clean(p.year)+'</span></span>'+
@@ -71,7 +71,7 @@ root.innerHTML='<main id="main-content"><section class="hero"><h1 class="hero-in
 '<section aria-label="Selected projects"><div class="filterbar"><nav class="filters" aria-label="Project categories">'+filters+'</nav><span class="count" aria-live="polite">'+String(filtered.length).padStart(2,'0')+' / '+String(allCount).padStart(2,'0')+' PROJECTS</span></div>'+
 (filtered.length?'<div class="work-grid">'+filtered.map((p,i)=>card(p,'work',i)).join('')+'</div>':'<div class="no-results" style="display:block">No published projects in this category yet.</div>')+'</section>'+
 '<section class="intro-end"><p>A growing collection of projects, selected experiments and work from the studio and beyond.</p><a class="underline-link" href="/archive/">VIEW FULL ARCHIVE ↗</a></section></main>';
-root.querySelectorAll('[data-filter]').forEach(btn=>btn.addEventListener('click',()=>{selected=btn.dataset.filter;renderHome()}));
+root.querySelectorAll('[data-filter]').forEach(btn=>btn.addEventListener('click',()=>{selected=btn.dataset.filter;renderHome();const active=[...root.querySelectorAll('[data-filter]')].find(x=>x.dataset.filter===selected);active?.focus({preventScroll:true})}));
 enhanceMaskedRollovers();
 addReveal();setMeta('Matthew Exousia® — Selected Work','A product designer and design engineer based in Lagos. Selected digital, web and brand work.');
 }
@@ -95,13 +95,13 @@ root.innerHTML='<main id="main-content" class="case-page"><div class="case-cover
 '<div><span class="mini-label">SERVICES</span><p>'+p.services.map(x=>'<span>'+clean(x)+'</span>').join('')+'</p>'+
 (p.url?'<p style="margin-top:18px"><a href="'+clean(p.url)+'" target="_blank" rel="noopener noreferrer">VISIT WEBSITE ↗</a></p>':'')+'</div></section>'+
 '<section class="case-story"><h2>THE BRIEF</h2><div class="story-copy"><h3>'+clean(p.overview)+'</h3><div class="story-columns"><div><h4>THE CHALLENGE</h4><p>'+clean(p.challenge)+'</p></div><div><h4>OUR APPROACH</h4><p>'+clean(p.approach)+'</p></div></div></div></section>'+
-(media.length?'<section class="media-sequence" aria-label="'+clean(p.title)+' selected visuals">'+gallery+'</section>':!p.cover?'<section class="media-pending"><h3>Work in progress.</h3><p>Approved project imagery is being prepared for this case study. The story and project information remain available here.</p></section>':'')+
+(media.length?'<section class="media-sequence" aria-label="'+clean(p.title)+' selected visuals">'+gallery+'</section>':p.url?'<section class="case-live"><p>EXPLORE THE PROJECT</p><a href="'+clean(p.url)+'" target="_blank" rel="noopener noreferrer">VIEW LIVE EXPERIENCE <span aria-hidden="true">↗</span></a></section>':'')+
 '<section class="story-note"><h2>THE WORK</h2><div class="note-copy"><strong>Made to move the work forward.</strong><p>'+clean(p.outcome)+'</p></div></section>'+
 '<section class="next-wrap" aria-label="Next project"><div class="next-overline"><span>UP NEXT</span><span>'+clean(next.category)+' / '+clean(next.year)+'</span></div>'+
 '<a class="next-project" href="'+projectUrl(next)+'" aria-label="View next project: '+clean(next.title)+'">'+cover(next)+'<span class="next-title"><strong>'+clean(next.title)+'</strong><span>↗</span></span><span class="next-progress" aria-hidden="true"></span></a></section></main>';
 const nextEl=root.querySelector('.next-project');
 if(nextEl&&!reduced){let ticking=false;window.addEventListener('scroll',function update(){if(!root.contains(nextEl)){window.removeEventListener('scroll',update);return;}if(ticking)return;ticking=true;requestAnimationFrame(()=>{const b=nextEl.getBoundingClientRect();const range=window.innerHeight+b.height;const val=Math.max(0,Math.min(1,(window.innerHeight-b.top)/range));const bar=nextEl.querySelector('.next-progress');if(bar)bar.style.width=(val*100).toFixed(1)+'%';nextEl.style.setProperty('--reveal',val.toFixed(3));ticking=false})},{passive:true})}
-addReveal();setMeta(p.title+' — Matthew Exousia®',p.overview,p.cover);
+addReveal();setMeta(p.title+' — Matthew Exousia®',p.overview,p.ogCover||p.cover);
 }
 function setMeta(title,description,coverUrl){
 document.title=title;
