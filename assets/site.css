@@ -400,3 +400,11 @@ body:has(.hero) .site-footer{margin-top:clamp(46px,6vw,88px)}
 .copy-email:focus-visible,.copy-email:active{opacity:1}
 @media(max-width:620px){.copy-email{width:36px;height:44px}.copy-email svg{width:14px;height:14px}}
 @media(prefers-reduced-motion:reduce){.copy-email,.copy-email .front-sheet{transition:none}.copy-email:hover .front-sheet{transform:none}}
+
+.copy-email{position:relative;opacity:1}
+.copy-email svg{opacity:.7}
+.copy-email:is(:hover,:focus-visible) svg{opacity:1}
+.copy-email::after{content:attr(data-tip);position:absolute;bottom:100%;left:50%;transform:translateX(-50%);padding:3px 9px;border-radius:99px;background:#222;color:#fff;font:500 11px/14px var(--font);letter-spacing:normal;white-space:nowrap;pointer-events:none;opacity:0;visibility:hidden;transition:opacity 120ms;z-index:2}
+.copy-email:focus-visible::after{opacity:1;visibility:visible}
+@media(hover:hover){.copy-email:hover::after{opacity:1;visibility:visible}}
+header.site-header:has(.copy-email:is(:hover,:focus-visible)) .copy-email::after{bottom:auto;top:var(--copy-tip-top,0px);position:fixed;left:var(--copy-tip-x);z-index:20}

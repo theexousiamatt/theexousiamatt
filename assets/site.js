@@ -309,8 +309,15 @@ for (const link of document.querySelectorAll('.header-mail, .overlay-main a[href
   const button=document.createElement('button');
   button.type='button';
   button.ariaLabel='Copy email address';
-  button.title='Copy email address';
+  button.dataset.tip='Copy email address';
   button.className='copy-email';
+  function placeTip(){
+    const box=button.getBoundingClientRect();
+    button.style.setProperty('--copy-tip-top',Math.max(1,box.top-21)+'px');
+    button.style.setProperty('--copy-tip-x',(box.left+box.width/2)+'px');
+  }
+  button.addEventListener('pointerenter',placeTip);
+  button.addEventListener('focus',placeTip);
   button.innerHTML='<svg aria-hidden="true" viewBox="0 0 12 12" fill="currentColor"><path d="M1 1h6v1H2v6H1z"/><path class="front-sheet" fill-rule="evenodd" d="M4 3h4v1h1v1h1v6H4zm1 1v6h4V6H7V4z"/></svg>';
   const status=document.createElement('span');
   status.className='sr-only';status.setAttribute('role','status');
@@ -320,10 +327,10 @@ for (const link of document.querySelectorAll('.header-mail, .overlay-main a[href
   button.onclick=async()=>{
     try {
       await navigator.clipboard.writeText(link.href.slice(7));
-      status.textContent='Email address copied';
+      status.textContent='Email address copied';button.dataset.tip='Copied!';
       button.innerHTML='<svg aria-hidden="true" viewBox="0 0 12 12" fill="currentColor"><path d="M1 6h2v2h2V6h2V4h2V2h2v3H9v2H7v2H5v2H3V9H1z"/></svg>';
       clearTimeout(timer);
-      timer=setTimeout(()=>{button.innerHTML=icon;status.textContent=''},1500);
+      timer=setTimeout(()=>{button.innerHTML=icon;button.dataset.tip='Copy email address';status.textContent=''},1500);
     } catch {window.prompt('Copy email address',link.href.slice(7))}
   };
 }
